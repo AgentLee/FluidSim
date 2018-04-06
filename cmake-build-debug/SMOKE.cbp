@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="SMOKE"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\Deps\;CMake Files\CMake\;CMake Files\cmake-build-debug\;CMake Files\cmake-build-debug\partio-src\;CMake Files\cmake-build-debug\partio-src\src\;CMake Files\cmake-build-debug\partio-src\src\lib\;CMake Files\src\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/local">
+				<Option working_dir="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/local"/>
+					<CompileFile command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install/strip">
+				<Option working_dir="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 install/strip"/>
+					<CompileFile command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="install">
+				<Option working_dir="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 install"/>
+					<CompileFile command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="list_install_components">
+				<Option working_dir="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 list_install_components"/>
+					<CompileFile command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="partio">
+				<Option output="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/lib/libpartio.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/7.3.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib/Makefile&quot;  VERBOSE=1 partio"/>
+					<CompileFile command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="partio/fast">
+				<Option output="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/lib/libpartio.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/7.3.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib/Makefile&quot;  VERBOSE=1 partio/fast"/>
+					<CompileFile command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="SMOKE">
+				<Option output="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/SMOKE_debug" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir=""/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/System/Library/Frameworks/OpenGL.framework"/>
+					<Add directory="/usr/local/include/eigen3"/>
+					<Add directory="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/7.3.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 SMOKE"/>
+					<CompileFile command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="SMOKE/fast">
+				<Option output="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/SMOKE_debug" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir=""/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/System/Library/Frameworks/OpenGL.framework"/>
+					<Add directory="/usr/local/include/eigen3"/>
+					<Add directory="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/7.3.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 SMOKE/fast"/>
+					<CompileFile command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/opt/local/bin/gmake -j4 -f &quot;/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/Particle.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleCaching.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleCaching.h">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleHeaders.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleHeaders.h">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleSimple.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleSimple.h">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleSimpleInterleave.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleSimpleInterleave.h">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/BGEO.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/BIN.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/GEO.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/MC.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PDA.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PDB.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PDB.h">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PDC.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PTC.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PTS.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/ParticleIO.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/RIB.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/ZIP.cpp">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/ZIP.h">
+			<Option target="partio"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/basic_math.cpp">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/basic_math.h">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/camera.cpp">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/camera.h">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/constants.cpp">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/constants.h">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/fps.cpp">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/fps.h">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/grid_data.cpp">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/grid_data.h">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/mac_grid.cpp">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/mac_grid.h">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/main.cpp">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/smoke_sim.cpp">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/smoke_sim.h">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/vec.cpp">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/vec.h">
+			<Option target="SMOKE"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/Deps/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\Deps\"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/CMake/DownloadProject.cmake">
+			<Option virtualFolder="CMake Files\CMake\"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/CMake/DownloadProject.CMakeLists.cmake.in">
+			<Option virtualFolder="CMake Files\CMake\"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/CMake/FindEigen3.cmake">
+			<Option virtualFolder="CMake Files\CMake\"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\cmake-build-debug\partio-src\"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\cmake-build-debug\partio-src\"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\cmake-build-debug\partio-src\src\lib\"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\cmake-build-debug\partio-src\src\lib\"/>
+		</Unit>
+		<Unit filename="/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\src\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

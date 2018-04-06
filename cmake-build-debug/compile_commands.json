@@ -1,0 +1,132 @@
+[
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/io/BGEO.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/BGEO.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/BGEO.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/io/BIN.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/BIN.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/BIN.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/io/GEO.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/GEO.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/GEO.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/io/MC.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/MC.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/MC.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/io/PDA.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PDA.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PDA.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/io/PDB.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PDB.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PDB.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/io/PDC.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PDC.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PDC.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/io/PTC.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PTC.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PTC.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/io/PTS.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PTS.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/PTS.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/io/ParticleIO.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/ParticleIO.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/ParticleIO.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/io/RIB.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/RIB.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/RIB.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/io/ZIP.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/ZIP.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/io/ZIP.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/core/Particle.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/Particle.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/Particle.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/core/ParticleCaching.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleCaching.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleCaching.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/core/ParticleHeaders.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleHeaders.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleHeaders.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/core/ParticleSimple.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleSimple.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleSimple.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-build/src/lib",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -I/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/lib  -fPIC -g   -Wextra -Wno-unused-parameter -std=gnu++11 -o CMakeFiles/partio.dir/core/ParticleSimpleInterleave.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleSimpleInterleave.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib/core/ParticleSimpleInterleave.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -isystem /usr/local/include/eigen3 -isystem /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib   -fPIC -Wall -Wextra -Wno-unused-parameter -march=native -g   -std=gnu++11 -o CMakeFiles/SMOKE.dir/main.cpp.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/main.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/main.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -isystem /usr/local/include/eigen3 -isystem /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib   -fPIC -Wall -Wextra -Wno-unused-parameter -march=native -g   -std=gnu++11 -o CMakeFiles/SMOKE.dir/smoke_sim.cpp.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/smoke_sim.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/smoke_sim.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -isystem /usr/local/include/eigen3 -isystem /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib   -fPIC -Wall -Wextra -Wno-unused-parameter -march=native -g   -std=gnu++11 -o CMakeFiles/SMOKE.dir/mac_grid.cpp.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/mac_grid.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/mac_grid.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -isystem /usr/local/include/eigen3 -isystem /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib   -fPIC -Wall -Wextra -Wno-unused-parameter -march=native -g   -std=gnu++11 -o CMakeFiles/SMOKE.dir/vec.cpp.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/vec.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/vec.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -isystem /usr/local/include/eigen3 -isystem /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib   -fPIC -Wall -Wextra -Wno-unused-parameter -march=native -g   -std=gnu++11 -o CMakeFiles/SMOKE.dir/grid_data.cpp.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/grid_data.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/grid_data.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -isystem /usr/local/include/eigen3 -isystem /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib   -fPIC -Wall -Wextra -Wno-unused-parameter -march=native -g   -std=gnu++11 -o CMakeFiles/SMOKE.dir/camera.cpp.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/camera.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/camera.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -isystem /usr/local/include/eigen3 -isystem /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib   -fPIC -Wall -Wextra -Wno-unused-parameter -march=native -g   -std=gnu++11 -o CMakeFiles/SMOKE.dir/fps.cpp.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/fps.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/fps.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -isystem /usr/local/include/eigen3 -isystem /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib   -fPIC -Wall -Wextra -Wno-unused-parameter -march=native -g   -std=gnu++11 -o CMakeFiles/SMOKE.dir/constants.cpp.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/constants.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/constants.cpp"
+},
+{
+  "directory": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/src",
+  "command": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++   -isystem /usr/local/include/eigen3 -isystem /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-src/src/lib   -fPIC -Wall -Wextra -Wno-unused-parameter -march=native -g   -std=gnu++11 -o CMakeFiles/SMOKE.dir/basic_math.cpp.o -c /Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/basic_math.cpp",
+  "file": "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/src/basic_math.cpp"
+}
+]

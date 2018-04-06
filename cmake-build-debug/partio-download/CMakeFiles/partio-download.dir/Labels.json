@@ -1,0 +1,55 @@
+
+{
+	"sources" : 
+	[
+		
+		{
+			"file" : "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-download/CMakeFiles/partio-download"
+		},
+		
+		{
+			"file" : "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-download/CMakeFiles/partio-download.rule"
+		},
+		
+		{
+			"file" : "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-download/CMakeFiles/partio-download-complete.rule"
+		},
+		
+		{
+			"file" : "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-download/partio-download-prefix/src/partio-download-stamp/partio-download-install.rule"
+		},
+		
+		{
+			"file" : "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-download/partio-download-prefix/src/partio-download-stamp/partio-download-mkdir.rule"
+		},
+		
+		{
+			"file" : "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-download/partio-download-prefix/src/partio-download-stamp/partio-download-download.rule"
+		},
+		
+		{
+			"file" : "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-download/partio-download-prefix/src/partio-download-stamp/partio-download-patch.rule"
+		},
+		
+		{
+			"file" : "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-download/partio-download-prefix/src/partio-download-stamp/partio-download-configure.rule"
+		},
+		
+		{
+			"file" : "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-download/partio-download-prefix/src/partio-download-stamp/partio-download-build.rule"
+		},
+		
+		{
+			"file" : "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-download/partio-download-prefix/src/partio-download-stamp/partio-download-test.rule"
+		},
+		
+		{
+			"file" : "/Users/joshwolper/Desktop/CIS563_SmokeBaseCode/cmake-build-debug/partio-download/partio-download-prefix/src/partio-download-stamp/partio-download-skip-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : [ "partio-download" ],
+		"name" : "partio-download"
+	}
+}
