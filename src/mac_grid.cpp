@@ -17,7 +17,7 @@ MACGrid target;
 
 
 // NOTE: x -> cols, z -> rows, y -> stacks
-MACGrid::RenderMode MACGrid::theRenderMode = SHEETS;
+MACGrid::RenderMode MACGrid::theRenderMode = CUBES;
 bool MACGrid::theDisplayVel = false;//true
 
 #define FOR_EACH_CELL \
@@ -130,26 +130,64 @@ void MACGrid::updateSources()
 }
 
 
+/*
+ * Want to figure out new value of q at some grid point.
+ * To do so we need the old value of q at the point it ends up at.
+ * We know where the particle ends up. It moves through the velocity field.
+ * To find where it started, we need to back trace from the grid point.
+ * 
+ * All we need is the value of q at this new grid point and 
+ * the value of q at the old grid point
+ * If the starting point isn't on the grid then we can interpolate
+ * the value from the existing ones on the grid.
+ * 
+ * xp - where the particle started from
+ * xG - where the particle ends up
+ * dx/dt = u - how the particle moves
+ * Forward Euler - xp = xG - dt(uG)
+*/
 void MACGrid::advectVelocity(double dt)
 {
     // TODO: Calculate new velocities and store in target
-
-
     // TODO: Get rid of these three lines after you implement yours
-	target.mU = mU;
-    target.mV = mV;
-    target.mW = mW;
+	// target.mU = mU;
+    // target.mV = mV;
+    // target.mW = mW;
 
     // TODO: Your code is here. It builds target.mU, target.mV and target.mW for all faces
-    //
-    //
-    //
+    
+    // Velocities are stored at the faces of the MAC grid
+    FOR_EACH_FACE
+    {
+        if(isValidFace(MACGrid::X, i, j, k)) {
+            vec3 currPos = getFacePosition(MACGrid::X, i, j, k);
+            vec3 startPos = getRewoundPosition(currPos, dt);
+
+            // q_n+1 = interpolate(q_n, xG - dt(uG));
+            target.mU(i, j, k) = getVelocityX(startPos);
+        }
+        
+        if(isValidFace(MACGrid::Y, i, j, k)) {
+            vec3 currPos = getFacePosition(MACGrid::Y, i, j, k);
+            vec3 startPos = getRewoundPosition(currPos, dt);
+
+            // q_n+1 = interpolate(q_n, xG - dt(uG));
+            target.mV(i, j, k) = getVelocityY(startPos);
+        }
+
+        if(isValidFace(MACGrid::Z, i, j, k)) {
+            vec3 currPos = getFacePosition(MACGrid::Z, i, j, k);
+            vec3 startPos = getRewoundPosition(currPos, dt);
+
+            // q_n+1 = interpolate(q_n, xG - dt(uG));
+            target.mW(i, j, k) = getVelocityZ(startPos);
+        }  
+    }
 
     // Then save the result to our object
     mU = target.mU;
     mV = target.mV;
     mW = target.mW;
-
 }
 
 void MACGrid::advectTemperature(double dt)
