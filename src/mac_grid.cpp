@@ -195,7 +195,7 @@ void MACGrid::advectTemperature(double dt)
     // TODO: Calculate new temp and store in target
 
     // TODO: Get rid of this line after you implement yours
-    target.mT = mT;
+    // target.mT = mT;
 
     // TODO: Your code is here. It builds target.mT for all cells.
 
@@ -252,17 +252,32 @@ void MACGrid::advectDensity(double dt)
     mD = target.mD;
 }
 
+/*
+ * pg45
+ */
 void MACGrid::computeBouyancy(double dt)
 {
 	// TODO: Calculate bouyancy and store in target
 
     // TODO: Get rid of this line after you implement yours
-    target.mV = mV;
+    // target.mV = mV;
 
     // TODO: Your code is here. It modifies target.mV for all y face velocities.
-    //
-    //
-    //
+	FOR_EACH_FACE 
+    {
+		if (isValidFace(MACGrid::Y, i, j, k)) {
+			vec3 currPos = getFacePosition(MACGrid::Y, i, j, k);
+
+            double temp = getTemperature(currPos);
+    	    double ambientTemp = 0;
+            double s = getDensity(currPos);
+
+            // Equation 5.1
+            vec3 fBuoy(0, -theBuoyancyAlpha * s + theBuoyancyBeta * (temp - ambientTemp), 0);
+
+            target.mV(i, j, k) = mV(i, j, k) + fBuoy[1];
+		}
+	}
 
     // and then save the result to our object
     mV = target.mV;
@@ -288,6 +303,7 @@ void MACGrid::computeVorticityConfinement(double dt)
 
     // TODO: Your code is here. It modifies target.mU,mV,mW for all faces.
     
+    // Needed to keep track of the vorticity at the centers
     GridData vorticityX;
     GridData vorticityY;
     GridData vorticityZ;
@@ -300,7 +316,8 @@ void MACGrid::computeVorticityConfinement(double dt)
     // Average the velocities to the cell centers 
     FOR_EACH_CELL
     {
-        // Use central differences to approximate vorticity based on equation 5.6
+        // Equation 5.6
+        // Use central differences to approximate vorticity 
         double x = ((mW(i, j + 1, k) - mW(i, j - 1, k)) / (2 * theCellSize)) - 
                    ((mV(i, j, k + 1) - mV(i, j, k - 1)) / (2 * theCellSize));
         double y = ((mU(i, j, k + 1) - mU(i, j, k - 1)) / (2 * theCellSize)) - 
@@ -309,9 +326,14 @@ void MACGrid::computeVorticityConfinement(double dt)
                    ((mU(i, j + 1, k) - mU(i, j - 1, k)) / (2 * theCellSize));
         vec3 vorticity(x, y, z);
 
+        vorticityX(i, j, k) = x;
+        vorticityX(i, j, k) = y;
+        vorticityZ(i, j, k) = z;
+
         vorticityMag(i, j, k) = vorticity.Length();
     }
 
+    // Need to find the force at the center of the cells
     FOR_EACH_CELL
     {
         vec3 vorticity(vorticityX(i, j, k), vorticityY(i, j, k), vorticityZ(i, j, k));
@@ -328,13 +350,37 @@ void MACGrid::computeVorticityConfinement(double dt)
         vec3 N = gradVorticity / (gradVorticity.Length() + pow(10, -20));
 
         // Equation 5.5
-        vec3 fConf = theVorticityEpsilon * theCellSize * N.Cross(gradVorticity);
+        vec3 fConf = theVorticityEpsilon * theCellSize * N.Cross(vorticity);
+
+        applyVorticityConfinement(fConf, i, j, k);
     }
 
     // Then save the result to our object
     mU = target.mU;
     mV = target.mV;
     mW = target.mW;
+}
+
+void MACGrid::applyVorticityConfinement(vec3 &fConf, int &i, int &j, int &k)
+{
+    if (isValidFace(MACGrid::X, i, j, k)) {
+        target.mU(i,j,k) += fConf[0];
+    } 
+    if (isValidFace(MACGrid::X, i + 1, j, k)) {
+        target.mU(i+1,j,k) += fConf[0];
+    }
+    if (isValidFace(MACGrid::Y, i, j, k)) {
+        target.mV(i,j,k) += fConf[1];
+    }
+    if (isValidFace(MACGrid::Y, i, j + 1, k)) {
+        target.mV(i,j+1,k) += fConf[1];
+    }
+    if (isValidFace(MACGrid::Z, i, j, k)) {
+        target.mW(i,j,k) += fConf[2];
+    }
+    if (isValidFace(MACGrid::Z, i, j, k + 1)) {
+        target.mW(i,j,k+1) += fConf[2];
+    }
 }
 
 void MACGrid::addExternalForces(double dt)
