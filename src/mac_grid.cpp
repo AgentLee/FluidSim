@@ -17,7 +17,7 @@ MACGrid target;
 
 
 // NOTE: x -> cols, z -> rows, y -> stacks
-MACGrid::RenderMode MACGrid::theRenderMode = CUBES;
+MACGrid::RenderMode MACGrid::theRenderMode = SHEETS;
 bool MACGrid::theDisplayVel = false;//true
 
 #define FOR_EACH_CELL \
@@ -198,9 +198,15 @@ void MACGrid::advectTemperature(double dt)
     target.mT = mT;
 
     // TODO: Your code is here. It builds target.mT for all cells.
-    //
-    //
-    //
+
+    // Temperature is contained at the centers
+    FOR_EACH_CELL
+    {
+        vec3 currPos = getCenter(i, j, k);
+        vec3 startPos = getRewoundPosition(currPos, dt);
+
+        target.mT(i, j, k) = getTemperature(startPos);
+    }
 
     // Then save the result to our object
     mT = target.mT;
@@ -232,9 +238,15 @@ void MACGrid::advectDensity(double dt)
     target.mD = mD;
 
     // TODO: Your code is here. It builds target.mD for all cells.
-    //
-    //
-    //
+
+    // Density is contained at the centers
+    FOR_EACH_CELL
+    {
+        vec3 currPos = getCenter(i, j, k);
+        vec3 startPos = getRewoundPosition(currPos, dt);
+
+        target.mD(i, j, k) = getDensity(startPos);
+    }
 
     // Then save the result to our object
     mD = target.mD;
@@ -258,25 +270,25 @@ void MACGrid::computeBouyancy(double dt)
 
 void MACGrid::computeVorticityConfinement(double dt)
 {
-   // TODO: Calculate vorticity confinement forces
+    // TODO: Calculate vorticity confinement forces
 
     // Apply the forces to the current velocity and store the result in target
-	// STARTED.
+    // STARTED.
 
     // TODO: Get rid of this line after you implement yours
-	target.mU = mU;
-	target.mV = mV;
-	target.mW = mW;
+    target.mU = mU;
+    target.mV = mV;
+    target.mW = mW;
 
     // TODO: Your code is here. It modifies target.mU,mV,mW for all faces.
     //
     //
     //
 
-   // Then save the result to our object
-   mU = target.mU;
-   mV = target.mV;
-   mW = target.mW;
+    // Then save the result to our object
+    mU = target.mU;
+    mV = target.mV;
+    mW = target.mW;
 }
 
 void MACGrid::addExternalForces(double dt)
@@ -285,110 +297,229 @@ void MACGrid::addExternalForces(double dt)
    computeVorticityConfinement(dt);
 }
 
+/*
+ * This function makes fluid incompressible and enforces boundary conditions.
+ * Subtract off the pressure gradient.
+ *      u_n+1 = u - dt(1/dens)(pressure grad)
+ * Satisfies incompressibility
+ *      dot(grad, u_n+1) = 0
+ * Satisfies boundary conditions
+ *      dot(u_n+1, n_hat) = dot(u, n_hat)
+ */
 void MACGrid::project(double dt)
 {
-   // TODO: Solve Ax = b for pressure
-   // 1. Contruct b
-   // 2. Construct A 
-   // 3. Solve for p
-   // Subtract pressure from our velocity and save in target
-	// STARTED.
+    // TODO: Solve Ax = b for pressure
+    // 1. Contruct b
+    // 2. Construct A 
+    // 3. Solve for p
+    // Subtract pressure from our velocity and save in target
 
     // TODO: Get rid of these 3 lines after you implement yours
-    target.mU = mU;
-	target.mV = mV;
-	target.mW = mW;
+    // target.mU = mU;
+    // target.mV = mV;
+    // target.mW = mW;
 
     // TODO: Your code is here. It solves for a pressure field and modifies target.mU,mV,mW for all faces.
-    //
-    //
-    //
+    GridData d;
+    d.initialize();
+    GridData p;
+    p.initialize();
 
-	#ifdef _DEBUG
-	// Check border velocities:
-	FOR_EACH_FACE {
-		if (isValidFace(MACGrid::X, i, j, k)) {
+    // Calculate divergence
+    FOR_EACH_FACE
+    {
+        // Should only do this for fluid cells
 
-			if (i == 0) {
-				if (abs(target.mU(i,j,k)) > 0.0000001) {
-					PRINT_LINE( "LOW X:  " << target.mU(i,j,k) );
-					//target.mU(i,j,k) = 0;
-				}
-			}
+        // Use central differences to approximate the divergence
+        double uPlus    = mU(i + 1, j, k);
+        double uMinus   = mU(i, j, k);
+        double vPlus    = mV(i, j + 1, k);
+        double vMinus   = mV(i, j, k);
+        double wPlus    = mW(i, j, k + 1);
+        double wMinus   = mW(i, j, k);
 
-			if (i == theDim[MACGrid::X]) {
-				if (abs(target.mU(i,j,k)) > 0.0000001) {
-					PRINT_LINE( "HIGH X: " << target.mU(i,j,k) );
-					//target.mU(i,j,k) = 0;
-				}
-			}
+        // Check boundaries - pg 28
+        if(i == 0) {
+            uMinus = 0;
+        }
+        if(i + 1 == theDim[MACGrid::X]) {
+            uPlus = 0;
+        }
 
-		}
-		if (isValidFace(MACGrid::Y, i, j, k)) {
-			
+        if(j == 0) {
+            vMinus = 0;
+        }
+        if(j + 1 == theDim[MACGrid::Y]) {
+            vPlus = 0;
+        }
 
-			if (j == 0) {
-				if (abs(target.mV(i,j,k)) > 0.0000001) {
-					PRINT_LINE( "LOW Y:  " << target.mV(i,j,k) );
-					//target.mV(i,j,k) = 0;
-				}
-			}
+        if(k == 0) {
+            wMinus = 0;
+        }
+        if(k == theDim[MACGrid::Z]) {
+            wPlus = 0;
+        }
+        
+        d(i, j, k) = -((uPlus - uMinus) + (vPlus - vMinus) + (wPlus - wMinus)) / theCellSize;
+    }
 
-			if (j == theDim[MACGrid::Y]) {
-				if (abs(target.mV(i,j,k)) > 0.0000001) {
-					PRINT_LINE( "HIGH Y: " << target.mV(i,j,k) );
-					//target.mV(i,j,k) = 0;
-				}
-			}
+    // Solve for p
+    bool converged = preconditionedConjugateGradient(AMatrix, p, d, 150, 0.01);
 
-		}
-		if (isValidFace(MACGrid::Z, i, j, k)) {
-			
-			if (k == 0) {
-				if (abs(target.mW(i,j,k)) > 0.0000001) {
-					PRINT_LINE( "LOW Z:  " << target.mW(i,j,k) );
-					//target.mW(i,j,k) = 0;
-				}
-			}
+    // Update pressures
+    double scalar = (dt / theAirDensity) * (1 / pow(theCellSize, 2));
+    FOR_EACH_CELL
+    {
+        p(i, j, k) *= scalar;
+        target.mP(i, j, k) = p(i, j, k);
+    }
 
-			if (k == theDim[MACGrid::Z]) {
-				if (abs(target.mW(i,j,k)) > 0.0000001) {
-					PRINT_LINE( "HIGH Z: " << target.mW(i,j,k) );
-					//target.mW(i,j,k) = 0;
-				}
-			}
-		}
-	}
-	#endif
+    // Update velocities using pressure (pg27)
+    // Need to check if the pressure is at a boundary
+    // scalar = dt * (1 / theAirDensity);
+
+    scalar = (theAirDensity * theCellSize) / dt;
+    FOR_EACH_FACE
+    {
+        double pMinusX = p(i - 1, j, k);
+        double pPlusX = p(i, j, k);
+        double pMinusY = p(i, j - 1, k);
+        double pPlusY = p(i, j, k);
+        double pMinusZ = p(i, j, k - 1);
+        double pPlusZ = p(i, j, k);
+
+        // Check if within bounds
+        // if so, use pressure from above
+        // otherwise recalculate pressure using equation 4.10
+        if(isValidFace(MACGrid::X, i, j, k)) {
+            if(i - 1 < 0) {
+                pMinusX = pPlusX - scalar * mU(i, j, k);
+            }
+
+            if(i >= theDim[MACGrid::X]) {
+                pPlusX = pMinusX + scalar * mU(i, j, k);
+            }
+        }
+
+        if(isValidFace(MACGrid::Y, i, j, k)) {
+            if(j - 1 < 0) {
+                pMinusY = pPlusY - scalar * mV(i, j, k);
+            }
+
+            if(j >= theDim[MACGrid::Y]) {
+                pPlusY = pMinusY + scalar * mV(i, j, k);
+            }
+        }
+
+        if(isValidFace(MACGrid::Z, i, j, k)) {
+            if(k - 1 < 0) {
+                pMinusZ = pPlusZ - scalar * mW(i, j, k);
+            }
+
+            if(k >= theDim[MACGrid::Z]) {
+                pPlusZ = pMinusZ + scalar * mW(i, j, k);
+            }
+        }
+
+        // Update velocities using equation 4.9
+        scalar = dt * (1 / theAirDensity);
+        if(isValidFace(MACGrid::X, i, j, k)) {
+            target.mU(i, j, k) = mU(i, j, k) - scalar * ((pPlusX - pMinusX) / theCellSize);
+        }
+        
+        if(isValidFace(MACGrid::Y, i, j, k)) {
+            target.mV(i, j, k) = mV(i, j, k) - scalar * ((pPlusY - pMinusY) / theCellSize);
+        }
+
+        if(isValidFace(MACGrid::Z, i, j, k)) {
+            target.mW(i, j, k) = mW(i, j, k) - scalar * ((pPlusZ - pMinusZ) / theCellSize);
+        }
+    }
 
 
-   // Then save the result to our object
-   mP = target.mP; 
-   mU = target.mU;
-   mV = target.mV;
-   mW = target.mW;
+    // #define _DEBUG
+    #ifdef _DEBUG
+    // Check border velocities:
+    FOR_EACH_FACE {
+        if (isValidFace(MACGrid::X, i, j, k)) {
 
-	#ifdef _DEBUG
-   // IMPLEMENT THIS AS A SANITY CHECK: assert (checkDivergence());
-   // TODO: Fix duplicate code:
-   FOR_EACH_CELL {
-	   // Construct the vector of divergences d:
+            if (i == 0) {
+                if (abs(target.mU(i,j,k)) > 0.0000001) {
+                    PRINT_LINE( "LOW X:  " << target.mU(i,j,k) );
+                    //target.mU(i,j,k) = 0;
+                }
+            }
+
+            if (i == theDim[MACGrid::X]) {
+                if (abs(target.mU(i,j,k)) > 0.0000001) {
+                    PRINT_LINE( "HIGH X: " << target.mU(i,j,k) );
+                    //target.mU(i,j,k) = 0;
+                }
+            }
+
+        }
+        if (isValidFace(MACGrid::Y, i, j, k)) {
+            
+
+            if (j == 0) {
+                if (abs(target.mV(i,j,k)) > 0.0000001) {
+                    PRINT_LINE( "LOW Y:  " << target.mV(i,j,k) );
+                    //target.mV(i,j,k) = 0;
+                }
+            }
+
+            if (j == theDim[MACGrid::Y]) {
+                if (abs(target.mV(i,j,k)) > 0.0000001) {
+                    PRINT_LINE( "HIGH Y: " << target.mV(i,j,k) );
+                    //target.mV(i,j,k) = 0;
+                }
+            }
+
+        }
+        if (isValidFace(MACGrid::Z, i, j, k)) {
+            
+            if (k == 0) {
+                if (abs(target.mW(i,j,k)) > 0.0000001) {
+                    PRINT_LINE( "LOW Z:  " << target.mW(i,j,k) );
+                    //target.mW(i,j,k) = 0;
+                }
+            }
+
+            if (k == theDim[MACGrid::Z]) {
+                if (abs(target.mW(i,j,k)) > 0.0000001) {
+                    PRINT_LINE( "HIGH Z: " << target.mW(i,j,k) );
+                    //target.mW(i,j,k) = 0;
+                }
+            }
+        }
+    }
+    #endif
+
+    // Then save the result to our object
+    mP = target.mP; 
+    mU = target.mU;
+    mV = target.mV;
+    mW = target.mW;
+
+    #ifdef _DEBUG
+    // IMPLEMENT THIS AS A SANITY CHECK: assert (checkDivergence());
+    // TODO: Fix duplicate code:
+    FOR_EACH_CELL {
+    // Construct the vector of divergences d:
         double velLowX = mU(i,j,k);
         double velHighX = mU(i+1,j,k);
         double velLowY = mV(i,j,k);
         double velHighY = mV(i,j+1,k);
         double velLowZ = mW(i,j,k);
         double velHighZ = mW(i,j,k+1);
-		double divergence = ((velHighX - velLowX) + (velHighY - velLowY) + (velHighZ - velLowZ)) / theCellSize;
-		if (abs(divergence) > 0.02 ) {
-			PRINT_LINE("WARNING: Divergent! ");
-			PRINT_LINE("Divergence: " << divergence);
-			PRINT_LINE("Cell: " << i << ", " << j << ", " << k);
-		}
-   }
-	#endif
-
-
+        double divergence = ((velHighX - velLowX) + (velHighY - velLowY) + (velHighZ - velLowZ)) / theCellSize;
+        if (abs(divergence) > 0.02 ) {
+            PRINT_LINE("WARNING: Divergent! ");
+            PRINT_LINE("Divergence: " << divergence);
+            PRINT_LINE("Cell: " << i << ", " << j << ", " << k);
+        }
+    }
+    #endif
 }
 
 vec3 MACGrid::getVelocity(const vec3& pt)
@@ -677,7 +808,9 @@ bool MACGrid::preconditionedConjugateGradient(const GridDataMatrix & A, GridData
 
 }
 
-
+/*
+ * Modified Incomplete Cholesky: pg36 course notes
+ */ 
 void MACGrid::calculatePreconditioner(const GridDataMatrix & A) {
 
 	precon.initialize();
@@ -685,14 +818,34 @@ void MACGrid::calculatePreconditioner(const GridDataMatrix & A) {
     // TODO: Build the modified incomplete Cholesky preconditioner following Fig 4.2 on page 36 of Bridson's 2007 SIGGRAPH fluid course notes.
     //       This corresponds to filling in precon(i,j,k) for all cells
 
+    // Tuning constant
+    double t = 0.97;
+
+    FOR_EACH_CELL
+    {
+        // if cell is a fluid 
+        {
+            double e = A.diag(i, j, k)  - ((A.plusI(i - 1, j, k) * precon(i - 1, j, k)) * (A.plusI(i - 1, j, k) * precon(i - 1, j, k)))
+                                        - ((A.plusJ(i, j - 1, k) * precon(i, j - 1, k)) * (A.plusJ(i, j - 1, k) * precon(i, j - 1, k)))
+                                        - ((A.plusK(i, j, k - 1) * precon(i, j, k - 1)) * (A.plusK(i, j, k - 1) * precon(i, j, k - 1)))
+                                        - t * ( A.plusI(i - 1, j, k) * (A.plusJ(i - 1, j, k) + A.plusK(i - 1, j, k)) * (precon(i - 1, j, k) * precon(i - 1, j, k)) +
+                                                A.plusJ(i, j - 1, k) * (A.plusI(i, j - 1, k) + A.plusK(i, j - 1, k)) * (precon(i, j - 1, k) * precon(i, j - 1, k)) +
+                                                A.plusK(i, j, k - 1) * (A.plusI(i, j, k - 1) + A.plusJ(i, j, k - 1)) * (precon(i, j, k - 1) * precon(i, j, k - 1)));
+
+            // Set to a small number to prevent divide by 0
+            precon(i, j, k) = 1 / sqrt(e + pow(10, -30));
+        }
+    }
 }
 
-
+/*
+ * pg37 in course notes
+ */
 void MACGrid::applyPreconditioner(const GridData & r, const GridDataMatrix & A, GridData & z) {
 
     // TODO: change if(0) to if(1) after you implement calculatePreconditoner function.
 
-    if(0) {
+    if(1) {
 
         // APPLY THE PRECONDITIONER:
         // Solve Lq = r for q:
