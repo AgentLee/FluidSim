@@ -235,7 +235,7 @@ void MACGrid::advectDensity(double dt)
     // TODO: Calculate new densitities and store in target
 
     // TODO: Get rid of this line after you implement yours
-    target.mD = mD;
+    // target.mD = mD;
 
     // TODO: Your code is here. It builds target.mD for all cells.
 
@@ -269,7 +269,7 @@ void MACGrid::computeBouyancy(double dt)
 			vec3 currPos = getFacePosition(MACGrid::Y, i, j, k);
 
             double temp = getTemperature(currPos);
-    	    double ambientTemp = 0;
+    	    double ambientTemp = 2;
             double s = getDensity(currPos);
 
             // Equation 5.1
