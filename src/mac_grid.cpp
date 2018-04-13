@@ -268,6 +268,12 @@ void MACGrid::computeBouyancy(double dt)
     mV = target.mV;
 }
 
+/*
+ * This function prevents the vortices from disappearing too quickly.
+ * w = cross(gradient, u) [curl]
+ * A vortex is a peak in the vorticity field
+ * pg46
+ */ 
 void MACGrid::computeVorticityConfinement(double dt)
 {
     // TODO: Calculate vorticity confinement forces
@@ -281,9 +287,49 @@ void MACGrid::computeVorticityConfinement(double dt)
     target.mW = mW;
 
     // TODO: Your code is here. It modifies target.mU,mV,mW for all faces.
-    //
-    //
-    //
+    
+    GridData vorticityX;
+    GridData vorticityY;
+    GridData vorticityZ;
+    GridData vorticityMag;
+    vorticityX.initialize();
+    vorticityY.initialize();
+    vorticityZ.initialize();
+    vorticityMag.initialize();
+
+    // Average the velocities to the cell centers 
+    FOR_EACH_CELL
+    {
+        // Use central differences to approximate vorticity based on equation 5.6
+        double x = ((mW(i, j + 1, k) - mW(i, j - 1, k)) / (2 * theCellSize)) - 
+                   ((mV(i, j, k + 1) - mV(i, j, k - 1)) / (2 * theCellSize));
+        double y = ((mU(i, j, k + 1) - mU(i, j, k - 1)) / (2 * theCellSize)) - 
+                   ((mW(i + 1, j, k) - mW(i - 1, j, k)) / (2 * theCellSize));
+        double z = ((mV(i + 1, j, k) - mV(i - 1, j, k)) / (2 * theCellSize)) - 
+                   ((mU(i, j + 1, k) - mU(i, j - 1, k)) / (2 * theCellSize));
+        vec3 vorticity(x, y, z);
+
+        vorticityMag(i, j, k) = vorticity.Length();
+    }
+
+    FOR_EACH_CELL
+    {
+        vec3 vorticity(vorticityX(i, j, k), vorticityY(i, j, k), vorticityZ(i, j, k));
+
+        // Equation 5.7
+        // Calculate gradient |vorticity|
+        double x = ((vorticityMag(i + 1, j, k) - vorticityMag(i - 1, j, k)) / (2 * theCellSize));
+        double y = ((vorticityMag(i, j + 1, k) - vorticityMag(i, j - 1, k)) / (2 * theCellSize));
+        double z = ((vorticityMag(i, j, k + 1) - vorticityMag(i, j, k - 1)) / (2 * theCellSize));
+        vec3 gradVorticity(x, y, z);
+
+        // Equation 5.8
+        // Normalize and prevent divide by 0
+        vec3 N = gradVorticity / (gradVorticity.Length() + pow(10, -20));
+
+        // Equation 5.5
+        vec3 fConf = theVorticityEpsilon * theCellSize * N.Cross(gradVorticity);
+    }
 
     // Then save the result to our object
     mU = target.mU;
@@ -436,59 +482,60 @@ void MACGrid::project(double dt)
         }
     }
 
-
     // #define _DEBUG
     #ifdef _DEBUG
-    // Check border velocities:
-    FOR_EACH_FACE {
-        if (isValidFace(MACGrid::X, i, j, k)) {
+    {
+        // Check border velocities:
+        FOR_EACH_FACE {
+            if (isValidFace(MACGrid::X, i, j, k)) {
 
-            if (i == 0) {
-                if (abs(target.mU(i,j,k)) > 0.0000001) {
-                    PRINT_LINE( "LOW X:  " << target.mU(i,j,k) );
-                    //target.mU(i,j,k) = 0;
+                if (i == 0) {
+                    if (abs(target.mU(i,j,k)) > 0.0000001) {
+                        PRINT_LINE( "LOW X:  " << target.mU(i,j,k) );
+                        //target.mU(i,j,k) = 0;
+                    }
                 }
-            }
 
-            if (i == theDim[MACGrid::X]) {
-                if (abs(target.mU(i,j,k)) > 0.0000001) {
-                    PRINT_LINE( "HIGH X: " << target.mU(i,j,k) );
-                    //target.mU(i,j,k) = 0;
+                if (i == theDim[MACGrid::X]) {
+                    if (abs(target.mU(i,j,k)) > 0.0000001) {
+                        PRINT_LINE( "HIGH X: " << target.mU(i,j,k) );
+                        //target.mU(i,j,k) = 0;
+                    }
                 }
+
             }
+            if (isValidFace(MACGrid::Y, i, j, k)) {
+                
 
-        }
-        if (isValidFace(MACGrid::Y, i, j, k)) {
-            
-
-            if (j == 0) {
-                if (abs(target.mV(i,j,k)) > 0.0000001) {
-                    PRINT_LINE( "LOW Y:  " << target.mV(i,j,k) );
-                    //target.mV(i,j,k) = 0;
+                if (j == 0) {
+                    if (abs(target.mV(i,j,k)) > 0.0000001) {
+                        PRINT_LINE( "LOW Y:  " << target.mV(i,j,k) );
+                        //target.mV(i,j,k) = 0;
+                    }
                 }
-            }
 
-            if (j == theDim[MACGrid::Y]) {
-                if (abs(target.mV(i,j,k)) > 0.0000001) {
-                    PRINT_LINE( "HIGH Y: " << target.mV(i,j,k) );
-                    //target.mV(i,j,k) = 0;
+                if (j == theDim[MACGrid::Y]) {
+                    if (abs(target.mV(i,j,k)) > 0.0000001) {
+                        PRINT_LINE( "HIGH Y: " << target.mV(i,j,k) );
+                        //target.mV(i,j,k) = 0;
+                    }
                 }
-            }
 
-        }
-        if (isValidFace(MACGrid::Z, i, j, k)) {
-            
-            if (k == 0) {
-                if (abs(target.mW(i,j,k)) > 0.0000001) {
-                    PRINT_LINE( "LOW Z:  " << target.mW(i,j,k) );
-                    //target.mW(i,j,k) = 0;
+            }
+            if (isValidFace(MACGrid::Z, i, j, k)) {
+                
+                if (k == 0) {
+                    if (abs(target.mW(i,j,k)) > 0.0000001) {
+                        PRINT_LINE( "LOW Z:  " << target.mW(i,j,k) );
+                        //target.mW(i,j,k) = 0;
+                    }
                 }
-            }
 
-            if (k == theDim[MACGrid::Z]) {
-                if (abs(target.mW(i,j,k)) > 0.0000001) {
-                    PRINT_LINE( "HIGH Z: " << target.mW(i,j,k) );
-                    //target.mW(i,j,k) = 0;
+                if (k == theDim[MACGrid::Z]) {
+                    if (abs(target.mW(i,j,k)) > 0.0000001) {
+                        PRINT_LINE( "HIGH Z: " << target.mW(i,j,k) );
+                        //target.mW(i,j,k) = 0;
+                    }
                 }
             }
         }
@@ -502,21 +549,23 @@ void MACGrid::project(double dt)
     mW = target.mW;
 
     #ifdef _DEBUG
-    // IMPLEMENT THIS AS A SANITY CHECK: assert (checkDivergence());
-    // TODO: Fix duplicate code:
-    FOR_EACH_CELL {
-    // Construct the vector of divergences d:
-        double velLowX = mU(i,j,k);
-        double velHighX = mU(i+1,j,k);
-        double velLowY = mV(i,j,k);
-        double velHighY = mV(i,j+1,k);
-        double velLowZ = mW(i,j,k);
-        double velHighZ = mW(i,j,k+1);
-        double divergence = ((velHighX - velLowX) + (velHighY - velLowY) + (velHighZ - velLowZ)) / theCellSize;
-        if (abs(divergence) > 0.02 ) {
-            PRINT_LINE("WARNING: Divergent! ");
-            PRINT_LINE("Divergence: " << divergence);
-            PRINT_LINE("Cell: " << i << ", " << j << ", " << k);
+    {
+        // IMPLEMENT THIS AS A SANITY CHECK: assert (checkDivergence());
+        // TODO: Fix duplicate code:
+        FOR_EACH_CELL {
+        // Construct the vector of divergences d:
+            double velLowX = mU(i,j,k);
+            double velHighX = mU(i+1,j,k);
+            double velLowY = mV(i,j,k);
+            double velHighY = mV(i,j+1,k);
+            double velLowZ = mW(i,j,k);
+            double velHighZ = mW(i,j,k+1);
+            double divergence = ((velHighX - velLowX) + (velHighY - velLowY) + (velHighZ - velLowZ)) / theCellSize;
+            if (abs(divergence) > 0.02 ) {
+                PRINT_LINE("WARNING: Divergent! ");
+                PRINT_LINE("Divergence: " << divergence);
+                PRINT_LINE("Cell: " << i << ", " << j << ", " << k);
+            }
         }
     }
     #endif
