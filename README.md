@@ -1,7 +1,7 @@
 # Fluid Simulator (Name TBD)
 
 ## Smoke
-![Smoke Sim](records/Smoke1/smoke.gif)
+![Smoke Sim](images/smoke.gif)
 
 ## How to Run
 ```
