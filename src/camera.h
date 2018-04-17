@@ -3,7 +3,7 @@
 #ifndef camera_H_
 #define camera_H_
 
-#include "open_gl_headers.h" 
+#include "util/open_gl_headers.h" 
 #include "util/vec.h"
 #include "util/matrix.h"
 

@@ -1,9 +1,9 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "smoke_sim.h"
 #include "util/constants.h" 
-#include "open_gl_headers.h" 
+#include "util/open_gl_headers.h" 
 #include "util/stb_image_write.h" 
-#include "custom_output.h" 
+#include "util/custom_output.h" 
 #include "util/basic_math.h"
 #include <fstream>
 

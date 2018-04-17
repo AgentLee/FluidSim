@@ -1,15 +1,16 @@
-#include "mac_grid.h"
-#include "open_gl_headers.h" 
-#include "camera.h"
-#include "custom_output.h" 
-#include "util/constants.h" 
 #include <math.h>
 #include <map>
 #include <stdio.h>
 #include <cstdlib>
+#include <fstream> 
+#include "mac_grid.h"
+#include "camera.h"
+#include "util/open_gl_headers.h" 
+#include "util/custom_output.h" 
+#include "util/constants.h" 
+
 #undef max
 #undef min 
-#include <fstream> 
 
 // Globals
 MACGrid target;

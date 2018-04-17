@@ -1,10 +1,10 @@
 #include "smoke_sim.h"
 #include "camera.h"
-#include "fps.h"
+#include "util/fps.h"
 #include "util/constants.h" 
 #include <stdio.h>
 #include <cmath> 
-#include "open_gl_headers.h" 
+#include "util/open_gl_headers.h" 
 #include "util/basic_math.h"
 #include <string.h>
 

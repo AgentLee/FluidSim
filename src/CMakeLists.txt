@@ -9,7 +9,7 @@ set(SOURCE_FILES main.cpp
 		 util/vec.cpp
 		 grid_data.cpp
 		 camera.cpp
-		 fps.cpp
+		 util/fps.cpp
 		 util/constants.cpp
 		 util/basic_math.cpp)
 add_SMOKE_executable(SMOKE ${SOURCE_FILES})
