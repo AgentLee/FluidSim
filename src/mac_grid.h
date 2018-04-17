@@ -26,6 +26,7 @@ public:
 	void advectVelocity(double dt);
 	void addExternalForces(double dt);
 	void project(double dt);
+	void computeDivergence(GridData &d);
 	void advectTemperature(double dt);
 	void advectDensity(double dt);
 	void advectRenderingParticles(double dt);

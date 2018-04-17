@@ -269,7 +269,7 @@ void MACGrid::computeBouyancy(double dt)
 			vec3 currPos = getFacePosition(MACGrid::Y, i, j, k);
 
             double temp = getTemperature(currPos);
-    	    double ambientTemp = 2;
+    	    double ambientTemp = 300;
             double s = getDensity(currPos);
 
             // Equation 5.1
@@ -327,7 +327,7 @@ void MACGrid::computeVorticityConfinement(double dt)
         vec3 vorticity(x, y, z);
 
         vorticityX(i, j, k) = x;
-        vorticityX(i, j, k) = y;
+        vorticityY(i, j, k) = y;
         vorticityZ(i, j, k) = z;
 
         vorticityMag(i, j, k) = vorticity.Length();
@@ -350,6 +350,7 @@ void MACGrid::computeVorticityConfinement(double dt)
         vec3 N = gradVorticity / (gradVorticity.Length() + pow(10, -20));
 
         // Equation 5.5
+        // Take the cross product to get fConf at the grid centers
         vec3 fConf = theVorticityEpsilon * theCellSize * N.Cross(vorticity);
 
         applyVorticityConfinement(fConf, i, j, k);
@@ -363,23 +364,26 @@ void MACGrid::computeVorticityConfinement(double dt)
 
 void MACGrid::applyVorticityConfinement(vec3 &fConf, int &i, int &j, int &k)
 {
+    // pg47
+    // "Take the appropriate averages to apply this 
+    // to the different components of velocity on the MAC grid"
     if (isValidFace(MACGrid::X, i, j, k)) {
-        target.mU(i,j,k) += fConf[0];
+        target.mU(i, j, k) += fConf[0] / 2;
     } 
     if (isValidFace(MACGrid::X, i + 1, j, k)) {
-        target.mU(i+1,j,k) += fConf[0];
+        target.mU(i + 1, j, k) += fConf[0] / 2;
     }
     if (isValidFace(MACGrid::Y, i, j, k)) {
-        target.mV(i,j,k) += fConf[1];
+        target.mV(i, j, k) += fConf[1] / 2;
     }
     if (isValidFace(MACGrid::Y, i, j + 1, k)) {
-        target.mV(i,j+1,k) += fConf[1];
+        target.mV(i, j + 1, k) += fConf[1] / 2;
     }
     if (isValidFace(MACGrid::Z, i, j, k)) {
-        target.mW(i,j,k) += fConf[2];
+        target.mW(i, j, k) += fConf[2] / 2;
     }
     if (isValidFace(MACGrid::Z, i, j, k + 1)) {
-        target.mW(i,j,k+1) += fConf[2];
+        target.mW(i, j, k + 1) += fConf[2] / 2;
     }
 }
 
@@ -387,6 +391,51 @@ void MACGrid::addExternalForces(double dt)
 {
    computeBouyancy(dt);
    computeVorticityConfinement(dt);
+}
+
+void MACGrid::computeDivergence(GridData &d)
+{
+    FOR_EACH_FACE
+    {
+        // Should only do this for fluid cells
+        {
+            // Use finite differences to approximate the divergence
+            double uPlus    = mU(i + 1, j, k);
+            double uMinus   = mU(i, j, k);
+            double vPlus    = mV(i, j + 1, k);
+            double vMinus   = mV(i, j, k);
+            double wPlus    = mW(i, j, k + 1);
+            double wMinus   = mW(i, j, k);
+
+            // Divergence estimates the rate that fluid coming in and out of a cell.
+            // The velocity components at the edges should be 0.
+            if(i == 0) {
+                uMinus = 0;
+            }
+            if(i + 1 == theDim[MACGrid::X]) {
+                uPlus = 0;
+            }
+
+            if(j == 0) {
+                vMinus = 0;
+            }
+            if(j + 1 == theDim[MACGrid::Y]) {
+                vPlus = 0;
+            }
+
+            if(k == 0) {
+                wMinus = 0;
+            }
+            if(k + 1 == theDim[MACGrid::Z]) {
+                wPlus = 0;
+            }
+            
+            // RHS of 4.22
+            // In the Fluid Simulation BOOK, Bridson says that we're only interested in the negative divergence.
+            double scale = 1 / theCellSize;
+            d(i, j, k) = -scale * ((uPlus - uMinus) + (vPlus - vMinus) + (wPlus - wMinus));
+        }   
+    }
 }
 
 /*
@@ -404,7 +453,7 @@ void MACGrid::project(double dt)
     // 1. Contruct b
     // 2. Construct A 
     // 3. Solve for p
-    // Subtract pressure from our velocity and save in target
+    // 4. Subtract pressure from our velocity and save in target
 
     // TODO: Get rid of these 3 lines after you implement yours
     // target.mU = mU;
@@ -417,114 +466,55 @@ void MACGrid::project(double dt)
     GridData p;
     p.initialize();
 
-    // Calculate divergence
-    FOR_EACH_FACE
-    {
-        // Should only do this for fluid cells
-
-        // Use central differences to approximate the divergence
-        double uPlus    = mU(i + 1, j, k);
-        double uMinus   = mU(i, j, k);
-        double vPlus    = mV(i, j + 1, k);
-        double vMinus   = mV(i, j, k);
-        double wPlus    = mW(i, j, k + 1);
-        double wMinus   = mW(i, j, k);
-
-        // Check boundaries - pg 28
-        if(i == 0) {
-            uMinus = 0;
-        }
-        if(i + 1 == theDim[MACGrid::X]) {
-            uPlus = 0;
-        }
-
-        if(j == 0) {
-            vMinus = 0;
-        }
-        if(j + 1 == theDim[MACGrid::Y]) {
-            vPlus = 0;
-        }
-
-        if(k == 0) {
-            wMinus = 0;
-        }
-        if(k == theDim[MACGrid::Z]) {
-            wPlus = 0;
-        }
-        
-        d(i, j, k) = -((uPlus - uMinus) + (vPlus - vMinus) + (wPlus - wMinus)) / theCellSize;
-    }
+    // Assume that the pressure is 0 outside the fluid
+    computeDivergence(d);
 
     // Solve for p
-    bool converged = preconditionedConjugateGradient(AMatrix, p, d, 150, 0.01);
+    if(!preconditionedConjugateGradient(AMatrix, p, d, 150, 0.01)) {
+        std::cout << "PCG didn't converge!" << std::endl;
+    }
 
-    // Update pressures
-    double scalar = (dt / theAirDensity) * (1 / pow(theCellSize, 2));
+    double pressureConstant = dt / (theAirDensity * theCellSize * theCellSize);
     FOR_EACH_CELL
     {
-        p(i, j, k) *= scalar;
+        // We just solved Ap = d for p.
+        // Look at equation 4.22:
+        // LHS is (dt / (density * cellsize * cellsize) * p
+        // RHS is inv(A) * d
+        // Need to divide by the constant value to truly solve for pressure
+        p(i, j, k) /= pressureConstant;
         target.mP(i, j, k) = p(i, j, k);
     }
 
-    // Update velocities using pressure (pg27)
-    // Need to check if the pressure is at a boundary
-    // scalar = dt * (1 / theAirDensity);
-
-    scalar = (theAirDensity * theCellSize) / dt;
+    // BOOK pg71 
+    double scale = dt / (theAirDensity * theCellSize);
     FOR_EACH_FACE
     {
-        double pMinusX = p(i - 1, j, k);
-        double pPlusX = p(i, j, k);
-        double pMinusY = p(i, j - 1, k);
-        double pPlusY = p(i, j, k);
-        double pMinusZ = p(i, j, k - 1);
-        double pPlusZ = p(i, j, k);
-
-        // Check if within bounds
-        // if so, use pressure from above
-        // otherwise recalculate pressure using equation 4.10
         if(isValidFace(MACGrid::X, i, j, k)) {
-            if(i - 1 < 0) {
-                pMinusX = pPlusX - scalar * mU(i, j, k);
+            if(i - 1 < 0 || i >= theDim[MACGrid::X]) {
+                target.mU(i, j, k) = 0;
             }
-
-            if(i >= theDim[MACGrid::X]) {
-                pPlusX = pMinusX + scalar * mU(i, j, k);
+            else {
+                target.mU(i, j, k) -= scale * (p(i, j, k) - p(i - 1, j, k));
             }
         }
 
         if(isValidFace(MACGrid::Y, i, j, k)) {
-            if(j - 1 < 0) {
-                pMinusY = pPlusY - scalar * mV(i, j, k);
+            if(j - 1 < 0 || j >= theDim[MACGrid::Y]) {
+                target.mV(i, j, k) = 0;
             }
-
-            if(j >= theDim[MACGrid::Y]) {
-                pPlusY = pMinusY + scalar * mV(i, j, k);
+            else {
+                target.mV(i, j, k) -= scale * (p(i, j, k) - p(i, j - 1, k));
             }
         }
 
         if(isValidFace(MACGrid::Z, i, j, k)) {
-            if(k - 1 < 0) {
-                pMinusZ = pPlusZ - scalar * mW(i, j, k);
+            if(k - 1 < 0 || k >= theDim[MACGrid::Z]) {
+                target.mW(i, j, k) = 0;
             }
-
-            if(k >= theDim[MACGrid::Z]) {
-                pPlusZ = pMinusZ + scalar * mW(i, j, k);
+            else {
+                target.mW(i, j, k) -= scale * (p(i, j, k) - p(i, j, k - 1));
             }
-        }
-
-        // Update velocities using equation 4.9
-        scalar = dt * (1 / theAirDensity);
-        if(isValidFace(MACGrid::X, i, j, k)) {
-            target.mU(i, j, k) = mU(i, j, k) - scalar * ((pPlusX - pMinusX) / theCellSize);
-        }
-        
-        if(isValidFace(MACGrid::Y, i, j, k)) {
-            target.mV(i, j, k) = mV(i, j, k) - scalar * ((pPlusY - pMinusY) / theCellSize);
-        }
-
-        if(isValidFace(MACGrid::Z, i, j, k)) {
-            target.mW(i, j, k) = mW(i, j, k) - scalar * ((pPlusZ - pMinusZ) / theCellSize);
         }
     }
 
@@ -589,10 +579,12 @@ void MACGrid::project(double dt)
     #endif
 
     // Then save the result to our object
-    mP = target.mP; 
-    mU = target.mU;
-    mV = target.mV;
-    mW = target.mW;
+    {
+        mP = target.mP; 
+        mU = target.mU;
+        mV = target.mV;
+        mW = target.mW;
+    }
 
     #ifdef _DEBUG
     {
@@ -799,10 +791,10 @@ vec3 MACGrid::getFacePosition(int dimension, int i, int j, int k)
 
 }
 
-void MACGrid::calculateAMatrix() {
-
-	FOR_EACH_CELL {
-
+void MACGrid::calculateAMatrix() 
+{
+	FOR_EACH_CELL 
+    {
 		int numFluidNeighbors = 0;
 		if (i-1 >= 0) {
 			AMatrix.plusI(i-1,j,k) = -1;
@@ -842,27 +834,14 @@ bool MACGrid::preconditionedConjugateGradient(const GridDataMatrix & A, GridData
 
 	GridData r = d; // Residual vector.
 
-	/*
-	PRINT_LINE("r: ");
-	FOR_EACH_CELL {
-		PRINT_LINE(r(i,j,k));
-	}
-	*/
 	GridData z; z.initialize();
 	applyPreconditioner(r, A, z); // Auxillary vector.
-	/*
-	PRINT_LINE("z: ");
-	FOR_EACH_CELL {
-		PRINT_LINE(z(i,j,k));
-	}
-	*/
 
 	GridData s = z; // Search vector;
 
 	double sigma = dotProduct(z, r);
 
 	for (int iteration = 0; iteration < maxIterations; iteration++) {
-
 		double rho = sigma; // According to TA. Here???
 
 		apply(A, s, z); // z = applyA(s);
@@ -887,7 +866,6 @@ bool MACGrid::preconditionedConjugateGradient(const GridDataMatrix & A, GridData
 		applyPreconditioner(r, A, z); // z = applyPreconditioner(r);
 
 		double sigmaNew = dotProduct(z, r);
-
 		double beta = sigmaNew / rho;
 
 		GridData betaTimesS; betaTimesS.initialize();
@@ -900,7 +878,6 @@ bool MACGrid::preconditionedConjugateGradient(const GridDataMatrix & A, GridData
 
 	PRINT_LINE( "PCG didn't converge!" );
 	return false;
-
 }
 
 /*
@@ -971,8 +948,6 @@ void MACGrid::applyPreconditioner(const GridData & r, const GridDataMatrix & A, 
     }
 
 }
-
-
 
 double MACGrid::dotProduct(const GridData & vector1, const GridData & vector2) {
 	
