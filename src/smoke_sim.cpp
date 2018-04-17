@@ -1,10 +1,10 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "smoke_sim.h"
-#include "constants.h" 
+#include "util/constants.h" 
 #include "open_gl_headers.h" 
-#include "stb_image_write.h" 
+#include "util/stb_image_write.h" 
 #include "custom_output.h" 
-#include "basic_math.h"
+#include "util/basic_math.h"
 #include <fstream>
 
 SmokeSim::SmokeSim() : mFrameNum(0), mTotalFrameNum(0), mRecordEnabled(false)

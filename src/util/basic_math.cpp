@@ -1,7 +1,7 @@
 
 
 #include "basic_math.h"
-#include "custom_output.h"
+#include "../custom_output.h"
 #include <cmath>
 #include <cstdarg>
 #include <iostream>

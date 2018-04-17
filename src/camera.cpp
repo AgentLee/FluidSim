@@ -5,7 +5,7 @@
 #include <math.h>
 #include <time.h>
 #include "open_gl_headers.h" 
-#include "basic_math.h" 
+#include "util/basic_math.h" 
 
 #include "camera.h"
 

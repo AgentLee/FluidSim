@@ -6,12 +6,12 @@ add_library(eigen INTERFACE IMPORTED)
 set(SOURCE_FILES main.cpp
 		 smoke_sim.cpp
 		 mac_grid.cpp
-		 vec.cpp
+		 util/vec.cpp
 		 grid_data.cpp
 		 camera.cpp
 		 fps.cpp
-		 constants.cpp
-		 basic_math.cpp)
+		 util/constants.cpp
+		 util/basic_math.cpp)
 add_SMOKE_executable(SMOKE ${SOURCE_FILES})
 include_directories( ${OPENGL_INCLUDE_DIR}  ${GLUT_INCLUDE_DIRS} )
 target_link_libraries(SMOKE ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} )

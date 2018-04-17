@@ -4,8 +4,8 @@
 #define camera_H_
 
 #include "open_gl_headers.h" 
-#include "vec.h"
-#include "matrix.h"
+#include "util/vec.h"
+#include "util/matrix.h"
 
 class Camera
 {

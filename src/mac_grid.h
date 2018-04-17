@@ -4,7 +4,7 @@
 #pragma warning(disable: 4244 4267 4996)
 
 #include "open_gl_headers.h" 
-#include "vec.h"
+#include "util/vec.h"
 #include "grid_data.h"
 #include "grid_data_matrix.h" 
 #include <Partio.h>

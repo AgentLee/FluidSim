@@ -2,7 +2,7 @@
 #include "open_gl_headers.h" 
 #include "camera.h"
 #include "custom_output.h" 
-#include "constants.h" 
+#include "util/constants.h" 
 #include <math.h>
 #include <map>
 #include <stdio.h>
@@ -11,10 +11,8 @@
 #undef min 
 #include <fstream> 
 
-
 // Globals
 MACGrid target;
-
 
 // NOTE: x -> cols, z -> rows, y -> stacks
 MACGrid::RenderMode MACGrid::theRenderMode = SHEETS;
@@ -34,10 +32,6 @@ bool MACGrid::theDisplayVel = false;//true
    for(int k = 0; k < theDim[MACGrid::Z]+1; k++) \
       for(int j = 0; j < theDim[MACGrid::Y]+1; j++) \
          for(int i = 0; i < theDim[MACGrid::X]+1; i++) 
-
-
-
-
 
 MACGrid::MACGrid()
 {
@@ -95,7 +89,6 @@ void MACGrid::initialize()
 void MACGrid::updateSources()
 {
     // Set initial values for density, temperature, velocity
-
     for(int i=6; i<12;i++){
         for(int j=0; j<5; j++){
             mV(i,j+1,0) = 2.0;
@@ -149,11 +142,6 @@ void MACGrid::updateSources()
 void MACGrid::advectVelocity(double dt)
 {
     // TODO: Calculate new velocities and store in target
-    // TODO: Get rid of these three lines after you implement yours
-	// target.mU = mU;
-    // target.mV = mV;
-    // target.mW = mW;
-
     // TODO: Your code is here. It builds target.mU, target.mV and target.mW for all faces
     
     // Velocities are stored at the faces of the MAC grid
@@ -193,10 +181,6 @@ void MACGrid::advectVelocity(double dt)
 void MACGrid::advectTemperature(double dt)
 {
     // TODO: Calculate new temp and store in target
-
-    // TODO: Get rid of this line after you implement yours
-    // target.mT = mT;
-
     // TODO: Your code is here. It builds target.mT for all cells.
 
     // Temperature is contained at the centers
@@ -233,10 +217,6 @@ void MACGrid::advectRenderingParticles(double dt) {
 void MACGrid::advectDensity(double dt)
 {
     // TODO: Calculate new densitities and store in target
-
-    // TODO: Get rid of this line after you implement yours
-    // target.mD = mD;
-
     // TODO: Your code is here. It builds target.mD for all cells.
 
     // Density is contained at the centers
@@ -258,11 +238,8 @@ void MACGrid::advectDensity(double dt)
 void MACGrid::computeBouyancy(double dt)
 {
 	// TODO: Calculate bouyancy and store in target
-
-    // TODO: Get rid of this line after you implement yours
-    // target.mV = mV;
-
     // TODO: Your code is here. It modifies target.mV for all y face velocities.
+
 	FOR_EACH_FACE 
     {
 		if (isValidFace(MACGrid::Y, i, j, k)) {
@@ -292,15 +269,8 @@ void MACGrid::computeBouyancy(double dt)
 void MACGrid::computeVorticityConfinement(double dt)
 {
     // TODO: Calculate vorticity confinement forces
-
     // Apply the forces to the current velocity and store the result in target
     // STARTED.
-
-    // TODO: Get rid of this line after you implement yours
-    target.mU = mU;
-    target.mV = mV;
-    target.mW = mW;
-
     // TODO: Your code is here. It modifies target.mU,mV,mW for all faces.
     
     // Needed to keep track of the vorticity at the centers
