@@ -16,7 +16,7 @@
 #include "camera.h"
 #include "grid_data.h"
 #include "grid_data_matrix.h" 
-#include "mac_grid.h"
+#include "particle.h"
 
 class Camera;
 
@@ -40,6 +40,8 @@ public:
 	void advectTemperature(double dt);
 	void advectDensity(double dt);
 	void advectRenderingParticles(double dt);
+	void particleToGrid(double dt);
+	void gridToParticle(double dt);
 
 protected:
 

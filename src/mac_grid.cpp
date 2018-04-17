@@ -27,7 +27,7 @@ bool MACGrid::theDisplayVel = false;//true
 
 MACGrid::MACGrid()
 {
-   initialize();
+    initialize();
 }
 
 MACGrid::MACGrid(const MACGrid& orig)
@@ -93,7 +93,6 @@ void MACGrid::updateSources()
         }
     }
 
-
 	// Refresh particles in source.
 	for(int i=6; i<12; i++) {
 		for (int j = 0; j < 5; j++) {
@@ -110,8 +109,6 @@ void MACGrid::updateSources()
 			}
 		}
 	}
-	
-
 }
 
 

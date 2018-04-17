@@ -39,3 +39,39 @@ The idea for projection is to make the fluid incompressible and also enforce bou
 
 
 - u<sub>i + &frac12;, j, k</sub><sup>n + 1</sup> = u<sub>i + &frac12;, j, k</sub>
+
+
+
+## Animating Sand as Fluid
+### 4.2: PIC Methods
+- PIC
+    - Fluid variables at a grid point were initialized as a weighted average of nearby particles and updated on the grid
+    - New particle values get interpolated from the grid
+    - The particle gets moved with the velocity field of the grid
+    - Bad because of excessive numerical diffusion from the constant averaging and interpolation
+- FLIP
+    - Particles act as the fundamental fluid representation
+    - The grid is used to move the particles
+- PIC/FLIP
+    ```
+    Init particles
+    For each time step  {
+        Compute weighted average of nearby particle velocities at each staggered MAC grid cell
+
+        FLIP: save grid velocities
+
+        Do non-advection steps on the grid
+
+        FLIP: subtract new grid velocities from saved velocities and add interpolated difference to each particle
+
+        PIC: interpolate new grid velocity to particles
+
+        Move particles with ODE solver
+
+        Write particle positions to target
+    }
+    ```
+    - We don't have to implement grid advection, vorticity confinement to counter numerical dissipation
+
+#### 4.2.2: Transferring to the Grid
+-
