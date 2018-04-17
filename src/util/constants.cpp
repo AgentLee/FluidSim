@@ -1,5 +1,3 @@
-
-
 #include "constants.h"
 
 const int theMillisecondsPerFrame = 10;

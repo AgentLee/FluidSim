@@ -3,11 +3,21 @@
 
 #pragma warning(disable: 4244 4267 4996)
 
+#include <math.h>
+#include <map>
+#include <stdio.h>
+#include <cstdlib>
+#include <fstream> 
+#include <Partio.h>
+#include "util/custom_output.h" 
+#include "util/constants.h" 
 #include "util/open_gl_headers.h" 
 #include "util/vec.h"
+#include "camera.h"
 #include "grid_data.h"
 #include "grid_data_matrix.h" 
-#include <Partio.h>
+#include "mac_grid.h"
+
 class Camera;
 
 class MACGrid

@@ -1,4 +1,3 @@
-
 #ifndef __MMC_TIMER_H__
 #define __MMC_TIMER_H__
 

@@ -1,5 +1,3 @@
-
-
 #include "fps.h"
 #include "clock.h"
 

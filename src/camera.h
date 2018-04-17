@@ -1,8 +1,13 @@
-
-
 #ifndef camera_H_
 #define camera_H_
 
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+#include <time.h>
+#include "util/basic_math.h" 
 #include "util/open_gl_headers.h" 
 #include "util/vec.h"
 #include "util/matrix.h"

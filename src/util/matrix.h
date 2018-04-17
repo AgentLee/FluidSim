@@ -1,5 +1,3 @@
-
-
 //////////////////////////////
 // Note: This matrix template class defines majority of the matrix
 // operations as overloaded operators or methods. It is assumed that

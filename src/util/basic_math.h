@@ -1,6 +1,10 @@
 // Used for math operations and constants that aren't included in the C++ standard library.
-
 #pragma once
+
+#include "custom_output.h"
+#include <cmath>
+#include <cstdarg>
+#include <iostream>
 
 namespace BasicMath {
 

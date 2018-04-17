@@ -1,9 +1,14 @@
-
 #ifndef smokeSim_H_
 #define smokeSim_H_
 
-#include "mac_grid.h"
+#include <fstream>
 #include <Partio.h>
+#include "util/constants.h" 
+#include "util/open_gl_headers.h" 
+#include "util/stb_image_write.h" 
+#include "util/custom_output.h" 
+#include "util/basic_math.h"
+#include "mac_grid.h"
 
 class Camera;
 class SmokeSim

@@ -1,5 +1,3 @@
-
-
 #ifndef __MMC_CLOCK_H__
 #define __MMC_CLOCK_H__
 

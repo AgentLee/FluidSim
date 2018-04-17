@@ -1,6 +1,5 @@
 #include "grid_data.h"
 
-
 GridData::GridData() :
    mDfltValue(0.0), mMax(0.0,0.0,0.0)
 {

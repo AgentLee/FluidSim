@@ -1,8 +1,4 @@
 #include "basic_math.h"
-#include "custom_output.h"
-#include <cmath>
-#include <cstdarg>
-#include <iostream>
 
 const double BasicMath::PI =					3.1415926535897932384626422832795028841971;
 const double BasicMath::ONE_OVER_PI =			0.3183098861837906715377675267450287240689;

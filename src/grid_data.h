@@ -1,4 +1,3 @@
-
 #ifndef GridData_H_
 #define GridData_H_
 
