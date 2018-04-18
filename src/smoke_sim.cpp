@@ -32,7 +32,7 @@ void SmokeSim::step()
 {
 	double dt = 0.04;//0.1;
 
-	return;
+	// return;
 	
 	// Step0: Gather user forces
 	mGrid.updateSources();
@@ -50,6 +50,16 @@ void SmokeSim::step()
 
 	// Step4: Advect rendering particles
 	mGrid.advectRenderingParticles(dt);
+
+	// PIC/FLIP
+	// Bridson's Sand algorithm
+	// mGrid.particleToGrid(dt);
+	// mGrid.saveGridVelFLIP(dt);
+	// mGrid.addExternalForces(dt);
+	// mGrid.project(dt);
+	// mGrid.updateVelFLIP(dt);
+	// mGrid.gridToParticle(dt);
+	// mGrid.advectParticle(dt);
 
 	mTotalFrameNum++;
 }

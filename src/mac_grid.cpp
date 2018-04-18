@@ -3,6 +3,8 @@
 #undef max
 #undef min 
 
+#define SMOKE_SIM true
+
 // Globals
 MACGrid target;
 enum cellType 
@@ -17,20 +19,38 @@ MACGrid::RenderMode MACGrid::theRenderMode = SHEETS;
 bool MACGrid::theDisplayVel = false;//true
 
 #define FOR_EACH_CELL \
-   for(int k = 0; k < theDim[MACGrid::Z]; k++)  \
-      for(int j = 0; j < theDim[MACGrid::Y]; j++) \
-         for(int i = 0; i < theDim[MACGrid::X]; i++) 
+   for(int k = 0; k < theDim[MACGrid::Z]; ++k)  \
+      for(int j = 0; j < theDim[MACGrid::Y]; ++j) \
+         for(int i = 0; i < theDim[MACGrid::X]; ++i) 
 
 #define FOR_EACH_CELL_REVERSE \
-   for(int k = theDim[MACGrid::Z] - 1; k >= 0; k--)  \
-      for(int j = theDim[MACGrid::Y] - 1; j >= 0; j--) \
-         for(int i = theDim[MACGrid::X] - 1; i >= 0; i--) 
+   for(int k = theDim[MACGrid::Z] - 1; k >= 0; --k)  \
+      for(int j = theDim[MACGrid::Y] - 1; j >= 0; --j) \
+         for(int i = theDim[MACGrid::X] - 1; i >= 0; --i) 
 
 #define FOR_EACH_FACE \
-   for(int k = 0; k < theDim[MACGrid::Z]+1; k++) \
-      for(int j = 0; j < theDim[MACGrid::Y]+1; j++) \
-         for(int i = 0; i < theDim[MACGrid::X]+1; i++) 
+   for(int k = 0; k < theDim[MACGrid::Z]+1; ++k) \
+      for(int j = 0; j < theDim[MACGrid::Y]+1; ++j) \
+         for(int i = 0; i < theDim[MACGrid::X]+1; ++i) 
 
+#define FOR_EACH_FACEX \
+   for(int k = 0; k < theDim[MACGrid::Z]; ++k) \
+      for(int j = 0; j < theDim[MACGrid::Y]; ++j) \
+         for(int i = 0; i < theDim[MACGrid::X] + 1; i) 
+
+#define FOR_EACH_FACEY \
+   for(int k = 0; k < theDim[MACGrid::Z]; ++k) \
+      for(int j = 0; j < theDim[MACGrid::Y] + 1; ++j) \
+         for(int i = 0; i < theDim[MACGrid::X]; ++i) 
+
+#define FOR_EACH_FACEZ \
+   for(int k = 0; k < theDim[MACGrid::Z] + 1; ++k) \
+      for(int j = 0; j < theDim[MACGrid::Y]; ++j) \
+         for(int i = 0; i < theDim[MACGrid::X]; ++i) 
+
+#define FOR_EACH_PARTICLE \
+    for(int i = 0; i < particles.size(); ++i) 
+    
 MACGrid::MACGrid()
 {
     initialize();
@@ -149,20 +169,97 @@ void MACGrid::initMarkerGrid()
         }
     }
 
-    FOR_EACH_CELL
+    // #define _DEBUG
+    #ifdef _DEBUG
     {
-        if(markerGrid(i, j, k) == AIR) {
-            std::cout << "AIR: " << i << " " << j << " " << k << std::endl;
-        }
+        FOR_EACH_CELL
+        {
+            if(markerGrid(i, j, k) == AIR) {
+                std::cout << "AIR: " << i << " " << j << " " << k << std::endl;
+            }
 
-        if(markerGrid(i, j, k) == FLUID) {
-            std::cout << "FLUID: " << i << " " << j << " " << k << std::endl;
-        }
+            if(markerGrid(i, j, k) == FLUID) {
+                std::cout << "FLUID: " << i << " " << j << " " << k << std::endl;
+            }
 
-        if(markerGrid(i, j, k) == SOLID) {
-            std::cout << "SOLID: " << i << " " << j << " " << k << std::endl;
+            if(markerGrid(i, j, k) == SOLID) {
+                std::cout << "SOLID: " << i << " " << j << " " << k << std::endl;
+            }
         }
     }
+    #endif
+}
+
+double MACGrid::kernelHelper(const double &r)
+{
+    if(r >= 0 && r <= 1) {
+        return 1 - r;
+    }
+    else if(r >= -1 && r >= 0) {
+        return 1 + r;
+    }
+    else {
+        return 0;
+    }
+}
+
+double MACGrid::kernel(const int &_x, const int &_y, const int &_z) 
+{
+    double x = _x / theCellSize;
+    double y = _y / theCellSize;
+    double z = _z / theCellSize;
+
+    double weight = kernelHelper(x) * kernelHelper(y) * kernelHelper(z);
+
+    return weight;
+}
+
+/*
+ * Calculate a weighted average of nearby particles in a cell
+ * using a trilinear interpolation kernel function.
+ */
+void MACGrid::particleToGrid(double dt)
+{
+    FOR_EACH_PARTICLE 
+    {
+        // Get the particle's position in the velocity components
+        // Calculate kernel weight
+    }
+
+    FOR_EACH_FACEX
+    {
+        // Divide by kernel weight
+    }
+
+    FOR_EACH_FACEY
+    {
+        // Divide by kernel weight
+    }
+
+    FOR_EACH_FACEZ
+    {
+        // Divide by kernel weight
+    }
+}
+
+void MACGrid::saveGridVelFLIP(double dt)
+{
+    // TODO
+}
+
+void MACGrid::updateVelFLIP(double dt)
+{
+    // TODO
+}
+
+void MACGrid::gridToParticle(double dt) 
+{
+    // TODO
+}
+
+void MACGrid::advectParticle(double dt)
+{
+    // TODO
 }
 
 /*
@@ -399,10 +496,19 @@ void MACGrid::applyVorticityConfinement(vec3 &fConf, int &i, int &j, int &k)
     }
 }
 
+void MACGrid::computeGravity(double dt)
+{
+    // TODO    
+}
+
 void MACGrid::addExternalForces(double dt)
 {
-   computeBouyancy(dt);
-   computeVorticityConfinement(dt);
+    #if SMOKE_SIM
+    computeBouyancy(dt);
+    computeVorticityConfinement(dt);
+    #else
+    computeGravity(dt);
+    #endif
 }
 
 void MACGrid::computeDivergence(GridData &d)
@@ -410,43 +516,46 @@ void MACGrid::computeDivergence(GridData &d)
     FOR_EACH_FACE
     {
         // Should only do this for fluid cells
-        {
-            // Use finite differences to approximate the divergence
-            double uPlus    = mU(i + 1, j, k);
-            double uMinus   = mU(i, j, k);
-            double vPlus    = mV(i, j + 1, k);
-            double vMinus   = mV(i, j, k);
-            double wPlus    = mW(i, j, k + 1);
-            double wMinus   = mW(i, j, k);
+        if(isValidCell(i, j, k)) {
+            // This isn't so much important for smoke sim. 
+            if(markerGrid(i, j, k) == FLUID || SMOKE_SIM) {
+                // Use finite differences to approximate the divergence
+                double uPlus    = mU(i + 1, j, k);
+                double uMinus   = mU(i, j, k);
+                double vPlus    = mV(i, j + 1, k);
+                double vMinus   = mV(i, j, k);
+                double wPlus    = mW(i, j, k + 1);
+                double wMinus   = mW(i, j, k);
 
-            // Divergence estimates the rate that fluid coming in and out of a cell.
-            // The velocity components at the edges should be 0.
-            if(i == 0) {
-                uMinus = 0;
-            }
-            if(i + 1 == theDim[MACGrid::X]) {
-                uPlus = 0;
-            }
+                // Divergence estimates the rate that fluid coming in and out of a cell.
+                // The velocity components at the edges should be 0.
+                if(i == 0) {
+                    uMinus = 0;
+                }
+                if(i + 1 == theDim[MACGrid::X]) {
+                    uPlus = 0;
+                }
 
-            if(j == 0) {
-                vMinus = 0;
-            }
-            if(j + 1 == theDim[MACGrid::Y]) {
-                vPlus = 0;
-            }
+                if(j == 0) {
+                    vMinus = 0;
+                }
+                if(j + 1 == theDim[MACGrid::Y]) {
+                    vPlus = 0;
+                }
 
-            if(k == 0) {
-                wMinus = 0;
+                if(k == 0) {
+                    wMinus = 0;
+                }
+                if(k + 1 == theDim[MACGrid::Z]) {
+                    wPlus = 0;
+                }
+                
+                // RHS of 4.22
+                // In the Fluid Simulation BOOK, Bridson says that we're only interested in the negative divergence.
+                double scale = 1 / theCellSize;
+                d(i, j, k) = -scale * ((uPlus - uMinus) + (vPlus - vMinus) + (wPlus - wMinus));
             }
-            if(k + 1 == theDim[MACGrid::Z]) {
-                wPlus = 0;
-            }
-            
-            // RHS of 4.22
-            // In the Fluid Simulation BOOK, Bridson says that we're only interested in the negative divergence.
-            double scale = 1 / theCellSize;
-            d(i, j, k) = -scale * ((uPlus - uMinus) + (vPlus - vMinus) + (wPlus - wMinus));
-        }   
+        }
     }
 }
 
@@ -662,8 +771,8 @@ vec3 MACGrid::getCenter(int i, int j, int k)
    return vec3(x, y, z);
 }
 
-vec3 MACGrid::getRewoundPosition(const vec3 & currentPosition, const double dt) {
-
+vec3 MACGrid::getRewoundPosition(const vec3 & currentPosition, const double dt) 
+{
 	/*
 	// EULER (RK1):
 	vec3 currentVelocity = getVelocity(currentPosition);
@@ -682,7 +791,6 @@ vec3 MACGrid::getRewoundPosition(const vec3 & currentPosition, const double dt) 
 	vec3 betterRewoundPosition = currentPosition - averageVelocity * dt;
 	vec3 clippedBetterRewoundPosition = clipToGrid(betterRewoundPosition, currentPosition);
 	return clippedBetterRewoundPosition;
-
 }
 
 vec3 MACGrid::clipToGrid(const vec3& outsidePoint, const vec3& insidePoint) {

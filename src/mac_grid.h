@@ -45,6 +45,8 @@ public:
 	void initParticles();
 	void initMarkerGrid();
 	void particleToGrid(double dt);
+	double kernel(const int &_x, const int &_y, const int &_z);
+	double kernelHelper(const double &r);
 	void saveGridVelFLIP(double dt);
 	void updateVelFLIP(double dt);
 	void gridToParticle(double dt);
@@ -56,6 +58,7 @@ protected:
 	void initialize();
 
 	// Simulation
+	void computeGravity(double dt);
 	void computeBouyancy(double dt);
 	void computeVorticityConfinement(double dt);
 	void applyVorticityConfinement(vec3 &fConf, int &i, int &j, int &k);
@@ -82,7 +85,6 @@ protected:
 	double getTemperature(const vec3& pt);
 	double getDensity(const vec3& pt);
 	vec3 getCenter(int i, int j, int k);
-
 	
 	vec3 getRewoundPosition(const vec3 & currentPosition, const double dt);
 	vec3 clipToGrid(const vec3& outsidePoint, const vec3& insidePoint);
@@ -125,7 +127,6 @@ public:
 	enum RenderMode { CUBES, SHEETS };
 	static RenderMode theRenderMode;
 	static bool theDisplayVel;
-	
 	
 	void saveSmoke(const char* fileName);
 	void saveParticle(std::string filename);
