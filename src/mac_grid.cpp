@@ -5,6 +5,12 @@
 
 // Globals
 MACGrid target;
+enum cellType 
+{
+    SOLID   = 0,
+    FLUID   = 1,
+    AIR     = 2,
+};
 
 // NOTE: x -> cols, z -> rows, y -> stacks
 MACGrid::RenderMode MACGrid::theRenderMode = SHEETS;
@@ -62,15 +68,17 @@ MACGrid::~MACGrid()
 
 void MACGrid::reset()
 {
-   mU.initialize();
-   mV.initialize();
-   mW.initialize();
-   mP.initialize();
-   mD.initialize();
-   mT.initialize(0.0);
+    initMarkerGrid();
 
-   calculateAMatrix();
-   calculatePreconditioner(AMatrix);
+    mU.initialize();
+    mV.initialize();
+    mW.initialize();
+    mP.initialize();
+    mD.initialize();
+    mT.initialize(0.0);
+
+    calculateAMatrix();
+    calculatePreconditioner(AMatrix);
 }
 
 void MACGrid::initialize()
@@ -111,6 +119,51 @@ void MACGrid::updateSources()
 	}
 }
 
+void MACGrid::initParticles()
+{
+    // Bridson recommends 8 particles per cell
+    int seed = 8;   
+}
+
+void MACGrid::initMarkerGrid()
+{   
+    markerGrid.initialize(AIR);
+    
+    int boundX = theDim[MACGrid::X];
+    int boundY = theDim[MACGrid::Y];
+    int boundZ = theDim[MACGrid::Z];
+    FOR_EACH_CELL
+    {
+        // 2D
+        if( i == 0 || i - 1 == boundX || 
+            j == 0 || j - 1 == boundY) 
+        {
+            markerGrid(i, j, k) = SOLID;
+        }
+
+        // 3D 
+        if(boundZ > 1) {
+            if(k == 0 || k - 1 == boundZ) {
+                markerGrid(i, j, k) = SOLID;
+            }
+        }
+    }
+
+    FOR_EACH_CELL
+    {
+        if(markerGrid(i, j, k) == AIR) {
+            std::cout << "AIR: " << i << " " << j << " " << k << std::endl;
+        }
+
+        if(markerGrid(i, j, k) == FLUID) {
+            std::cout << "FLUID: " << i << " " << j << " " << k << std::endl;
+        }
+
+        if(markerGrid(i, j, k) == SOLID) {
+            std::cout << "SOLID: " << i << " " << j << " " << k << std::endl;
+        }
+    }
+}
 
 /*
  * Want to figure out new value of q at some grid point.
@@ -414,11 +467,6 @@ void MACGrid::project(double dt)
     // 3. Solve for p
     // 4. Subtract pressure from our velocity and save in target
 
-    // TODO: Get rid of these 3 lines after you implement yours
-    // target.mU = mU;
-    // target.mV = mV;
-    // target.mW = mW;
-
     // TODO: Your code is here. It solves for a pressure field and modifies target.mU,mV,mW for all faces.
     GridData d;
     d.initialize();
@@ -614,7 +662,6 @@ vec3 MACGrid::getCenter(int i, int j, int k)
    return vec3(x, y, z);
 }
 
-
 vec3 MACGrid::getRewoundPosition(const vec3 & currentPosition, const double dt) {
 
 	/*
@@ -637,7 +684,6 @@ vec3 MACGrid::getRewoundPosition(const vec3 & currentPosition, const double dt) 
 	return clippedBetterRewoundPosition;
 
 }
-
 
 vec3 MACGrid::clipToGrid(const vec3& outsidePoint, const vec3& insidePoint) {
 	/*
@@ -959,8 +1005,8 @@ double MACGrid::maxMagnitude(const GridData & vector) {
 }
 
 
-void MACGrid::apply(const GridDataMatrix & matrix, const GridData & vector, GridData & result) {
-	
+void MACGrid::apply(const GridDataMatrix & matrix, const GridData & vector, GridData & result) 
+{
 	FOR_EACH_CELL { // For each row of the matrix.
 
 		double diag = 0;
@@ -984,7 +1030,8 @@ void MACGrid::apply(const GridDataMatrix & matrix, const GridData & vector, Grid
 
 }
 
-void MACGrid::saveSmoke(const char* fileName) {
+void MACGrid::saveSmoke(const char* fileName) 
+{
 	std::ofstream fileOut(fileName);
 	if (fileOut.is_open()) {
 		FOR_EACH_CELL {
@@ -994,7 +1041,8 @@ void MACGrid::saveSmoke(const char* fileName) {
 	}
 }
 
-void MACGrid::saveParticle(std::string filename){
+void MACGrid::saveParticle(std::string filename)
+{
 	Partio::ParticlesDataMutable *parts = Partio::create();
 	Partio::ParticleAttribute posH, vH;
 	posH = parts->addAttribute("position", Partio::VECTOR, 3);
@@ -1015,7 +1063,8 @@ void MACGrid::saveParticle(std::string filename){
 	parts->release();
 }
 
-void MACGrid::saveDensity(std::string filename){
+void MACGrid::saveDensity(std::string filename)
+{
 	Partio::ParticlesDataMutable *density_field = Partio::create();
 	Partio::ParticleAttribute posH, rhoH;
 	posH = density_field->addAttribute("position", Partio::VECTOR, 3);

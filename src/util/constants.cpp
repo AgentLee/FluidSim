@@ -6,6 +6,7 @@ const int theMillisecondsPerFrame = 10;
 const int theDim[3] = {4, 4, 1};
 #else
 const int theDim[3] = {32, 32, 1};
+// const int theDim[3] = {3,3,3};
 #endif
 
 const double theCellSize = 0.5;

@@ -13,7 +13,7 @@ SmokeSim::~SmokeSim()
 
 void SmokeSim::reset()
 {
-   mGrid.reset();
+	mGrid.reset();
 	mTotalFrameNum = 0;
 }
 
@@ -32,6 +32,8 @@ void SmokeSim::step()
 {
 	double dt = 0.04;//0.1;
 
+	return;
+	
 	// Step0: Gather user forces
 	mGrid.updateSources();
 

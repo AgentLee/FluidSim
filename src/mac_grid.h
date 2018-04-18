@@ -40,8 +40,15 @@ public:
 	void advectTemperature(double dt);
 	void advectDensity(double dt);
 	void advectRenderingParticles(double dt);
+
+	// PIC/FLIP based on Bridson's Sand paper
+	void initParticles();
+	void initMarkerGrid();
 	void particleToGrid(double dt);
+	void saveGridVelFLIP(double dt);
+	void updateVelFLIP(double dt);
 	void gridToParticle(double dt);
+	void advectParticle(double dt);
 
 protected:
 
@@ -104,13 +111,13 @@ protected:
 	GridData mD;  // Density, stored at grid centers, size is dimX*dimY*dimZ
 	GridData mT;  // Temperature, stored at grid centers, size is dimX*dimY*dimZ
 
-	
+	std::vector<Particle> particles;
+	GridData markerGrid;
+
 	GridDataMatrix AMatrix;
 	GridData precon;
 
-
 public:
-
 	// rendering particles
 	std::vector<vec3> rendering_particles;
 	std::vector<vec3> rendering_particles_vel;
