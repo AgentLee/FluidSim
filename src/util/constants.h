@@ -13,5 +13,6 @@ extern const double theBuoyancyAlpha;
 extern const double theBuoyancyBeta;	
 extern const double theBuoyancyAmbientTemperature;
 extern const double theVorticityEpsilon;
+extern const double theGravity;
 
 #endif

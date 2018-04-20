@@ -15,7 +15,11 @@ enum cellType
 };
 
 // NOTE: x -> cols, z -> rows, y -> stacks
+#ifdef SMOKE_SIM
 MACGrid::RenderMode MACGrid::theRenderMode = SHEETS;
+#else
+MACGrid::RenderMode MACGrid::theRenderMode = PARTICLES;
+#endif
 bool MACGrid::theDisplayVel = false;//true
 
 #define FOR_EACH_CELL \
@@ -49,8 +53,12 @@ bool MACGrid::theDisplayVel = false;//true
          for(int i = 0; i < theDim[MACGrid::X]; ++i) 
 
 #define FOR_EACH_PARTICLE \
-    for(int i = 0; i < particles.size(); ++i) 
-    
+    for(int i = 0; i < particles.size(); i++) \
+
+double rand(double LO, double HI) {
+	return LO + (rand()) / ((RAND_MAX / (HI - LO)));
+}
+
 MACGrid::MACGrid()
 {
     initialize();
@@ -88,7 +96,9 @@ MACGrid::~MACGrid()
 
 void MACGrid::reset()
 {
+    
     initMarkerGrid();
+    initParticles();
 
     mU.initialize();
     mV.initialize();
@@ -143,12 +153,34 @@ void MACGrid::initParticles()
 {
     // Bridson recommends 8 particles per cell
     int seed = 8;   
+	for (double i = theCellSize; i < (theDim[X]-1)*theCellSize; i += theCellSize) {
+		for (double j = theCellSize; j < (theDim[Y]-1)*theCellSize; j+= theCellSize) {
+			for (double k = theCellSize; k < (theDim[Z]-1)*theCellSize; k+= theCellSize) {
+				for (int c = 0; c < seed; c++) {
+					vec3 pos = vec3(rand(i, i + theCellSize), rand(j, j + theCellSize), rand(k, k + theCellSize));
+					vec3 vel = vec3(0,0,0);
+					Particle p = Particle(pos, vel);
+					particles.push_back(p);
+					// std::cout << pos[0] << " " << pos[1] << " " << pos[2] << std::endl;
+				}
+			}
+		}
+	}
 }
 
 void MACGrid::initMarkerGrid()
 {   
-    markerGrid.initialize(AIR);
-    
+    if(SMOKE_SIM) {
+        // Assume everything in bounds is a fluid cell.
+        markerGrid.initialize(FLUID);
+        return;
+    }
+    else {
+        // We havent advected any particles in the grid yet,
+        // so everything in bounds is an air cell.
+        markerGrid.initialize(AIR);
+    }    
+
     int boundX = theDim[MACGrid::X];
     int boundY = theDim[MACGrid::Y];
     int boundZ = theDim[MACGrid::Z];
@@ -498,7 +530,10 @@ void MACGrid::applyVorticityConfinement(vec3 &fConf, int &i, int &j, int &k)
 
 void MACGrid::computeGravity(double dt)
 {
-    // TODO    
+    FOR_EACH_CELL
+    {
+        mV(i, j, k) += theGravity;
+    }  
 }
 
 void MACGrid::addExternalForces(double dt)
@@ -517,8 +552,7 @@ void MACGrid::computeDivergence(GridData &d)
     {
         // Should only do this for fluid cells
         if(isValidCell(i, j, k)) {
-            // This isn't so much important for smoke sim. 
-            if(markerGrid(i, j, k) == FLUID || SMOKE_SIM) {
+            if(markerGrid(i, j, k) == FLUID) {
                 // Use finite differences to approximate the divergence
                 double uPlus    = mU(i + 1, j, k);
                 double uMinus   = mU(i, j, k);
@@ -598,6 +632,10 @@ void MACGrid::project(double dt)
         // LHS is (dt / (density * cellsize * cellsize) * p
         // RHS is inv(A) * d
         // Need to divide by the constant value to truly solve for pressure
+
+        // ALSO pg31
+        // We divide by the pressure constant because to build the A matrix
+        // we want to get rid of this term by dividng by both sides.
         p(i, j, k) /= pressureConstant;
         target.mP(i, j, k) = p(i, j, k);
     }
@@ -904,32 +942,36 @@ vec3 MACGrid::getFacePosition(int dimension, int i, int j, int k)
 
 }
 
+// pg31
 void MACGrid::calculateAMatrix() 
 {
+    // Don't worry about the pressure constant here.
+    // Assume that it's divide by both sides, 
+    // therefore pressure gets divided by it later.
 	FOR_EACH_CELL 
     {
-		int numFluidNeighbors = 0;
-		if (i-1 >= 0) {
+        int numFluidNeighbors = 0;
+		if (isValidCell(i - 1, j, k) && markerGrid(i - 1, j, k) == FLUID) {
 			AMatrix.plusI(i-1,j,k) = -1;
 			numFluidNeighbors++;
 		}
-		if (i+1 < theDim[MACGrid::X]) {
+		if (isValidCell(i + 1, j, k) && markerGrid(i + 1, j, k) == FLUID) {
 			AMatrix.plusI(i,j,k) = -1;
 			numFluidNeighbors++;
 		}
-		if (j-1 >= 0) {
+		if (isValidCell(i, j - 1, k) && markerGrid(i, j - 1, k) == FLUID) {
 			AMatrix.plusJ(i,j-1,k) = -1;
 			numFluidNeighbors++;
 		}
-		if (j+1 < theDim[MACGrid::Y]) {
+		if (isValidCell(i, j + 1, k) && markerGrid(i, j + 1, k) == FLUID) {
 			AMatrix.plusJ(i,j,k) = -1;
 			numFluidNeighbors++;
 		}
-		if (k-1 >= 0) {
+		if (isValidCell(i, j, k - 1) && markerGrid(i, j, k - 1) == FLUID) {
 			AMatrix.plusK(i,j,k-1) = -1;
 			numFluidNeighbors++;
 		}
-		if (k+1 < theDim[MACGrid::Z]) {
+		if (isValidCell(i, j, k + 1) && markerGrid(i, j, k + 1) == FLUID) {
 			AMatrix.plusK(i,j,k) = -1;
 			numFluidNeighbors++;
 		}
@@ -1194,10 +1236,25 @@ void MACGrid::saveDensity(std::string filename)
 
 void MACGrid::draw(const Camera& c)
 {   
-   drawWireGrid();
-   if (theDisplayVel) drawVelocities();   
-   if (theRenderMode == CUBES) drawSmokeCubes(c);
-   else drawSmoke(c);
+    drawWireGrid();
+    if (theDisplayVel) {
+        drawVelocities();
+    }   
+    
+    switch(theRenderMode) 
+    {
+        case CUBES:
+            drawSmokeCubes(c);
+            break;
+        case SHEETS:
+            drawSmoke(c);
+            break;
+        case PARTICLES:
+            drawParticles(c);
+            break;
+        default:
+            break;
+    }
 }
 
 void MACGrid::drawVelocities()
@@ -1415,6 +1472,19 @@ void MACGrid::drawSmokeCubes(const Camera& c)
    {
       drawCube(it->second);
    }
+}
+
+void MACGrid::drawParticles(const Camera& c) 
+{
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glPointSize(3.f);
+	glBegin(GL_POINTS); 
+        FOR_EACH_PARTICLE 
+        {
+            Particle p = particles.at(i);
+            glVertex3d(p.position[0], p.position[1], p.position[2]);            
+        }
+	glEnd();
 }
 
 void MACGrid::drawWireGrid()

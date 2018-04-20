@@ -69,6 +69,7 @@ protected:
 	void drawSmokeCubes(const Camera& c);
 	void drawSmoke(const Camera& c);
 	void drawCube(const MACGrid::Cube& c);
+	void drawParticles(const Camera &c);
 	void drawFace(const MACGrid::Cube& c);
 	void drawVelocities();
 	vec4 getRenderColor(int i, int j, int k);
@@ -113,6 +114,11 @@ protected:
 	GridData mD;  // Density, stored at grid centers, size is dimX*dimY*dimZ
 	GridData mT;  // Temperature, stored at grid centers, size is dimX*dimY*dimZ
 
+	// FLIP - Save a copy of the velocities for FLIP solve
+	GridDataX mUcopy; 
+	GridDataY mVcopy; 
+	GridDataZ mWcopy; 
+
 	std::vector<Particle> particles;
 	GridData markerGrid;
 
@@ -124,7 +130,7 @@ public:
 	std::vector<vec3> rendering_particles;
 	std::vector<vec3> rendering_particles_vel;
 
-	enum RenderMode { CUBES, SHEETS };
+	enum RenderMode { CUBES, SHEETS, PARTICLES };
 	static RenderMode theRenderMode;
 	static bool theDisplayVel;
 	

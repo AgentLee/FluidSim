@@ -6,7 +6,7 @@ const int theMillisecondsPerFrame = 10;
 const int theDim[3] = {4, 4, 1};
 #else
 const int theDim[3] = {32, 32, 1};
-// const int theDim[3] = {3,3,3};
+// const int theDim[3] = {4,4,4};
 #endif
 
 const double theCellSize = 0.5;
@@ -18,3 +18,5 @@ const double theBuoyancyBeta = 0.37; // Buoyancy's effect due to temperature dif
 const double theBuoyancyAmbientTemperature = 0.0; // Ambient temperature.
 
 const double theVorticityEpsilon = 0.10;
+
+const double theGravity = -9.8;
