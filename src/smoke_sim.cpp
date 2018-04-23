@@ -34,6 +34,7 @@ void SmokeSim::step()
 
 	// return;
 	
+
 	// Step0: Gather user forces
 	mGrid.updateSources();
 
