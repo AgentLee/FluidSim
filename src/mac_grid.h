@@ -43,14 +43,18 @@ public:
 
 	// PIC/FLIP based on Bridson's Sand paper
 	void initParticles();
-	void initMarkerGrid();
+	void initMarkerGrid(bool first);
 	void particleToGrid(double dt);
 	double kernel(const int &_x, const int &_y, const int &_z);
+	double kernel(const vec3 &p);
 	double kernelHelper(const double &r);
 	void saveGridVelFLIP(double dt);
 	void updateVelFLIP(double dt);
 	void gridToParticle(double dt);
 	void advectParticle(double dt);
+	vec3 integrate(const vec3 &pos, const vec3 &vel, const double &dt); 
+
+	void printMarkerGrid();
 
 protected:
 
@@ -83,6 +87,9 @@ protected:
 	double getVelocityX(const vec3& pt);
 	double getVelocityY(const vec3& pt);
 	double getVelocityZ(const vec3& pt);
+	double _getVelocityX(const vec3& pt);
+	double _getVelocityY(const vec3& pt);
+	double _getVelocityZ(const vec3& pt);
 	double getTemperature(const vec3& pt);
 	double getDensity(const vec3& pt);
 	vec3 getCenter(int i, int j, int k);
@@ -120,6 +127,8 @@ protected:
 	GridDataZ mWcopy; 
 
 	std::vector<Particle> particles;
+	std::vector<Particle> particlesCopy;
+	std::vector<Particle> particlesCopyPIC;
 	GridData markerGrid;
 
 	GridDataMatrix AMatrix;

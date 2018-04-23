@@ -36,25 +36,26 @@ void SmokeSim::step()
 	
 
 	// Step0: Gather user forces
-	mGrid.updateSources();
+	// mGrid.updateSources();
 
-	// Step1: Calculate new velocities
-	mGrid.advectVelocity(dt);
-	mGrid.addExternalForces(dt);
-	mGrid.project(dt);
+	// // Step1: Calculate new velocities
+	// mGrid.advectVelocity(dt);
+	// mGrid.addExternalForces(dt);
+	// mGrid.project(dt);
 
-	// Step2: Calculate new temperature
-	mGrid.advectTemperature(dt);
+	// // Step2: Calculate new temperature
+	// mGrid.advectTemperature(dt);
 
-	// Step3: Calculate new density 
-	mGrid.advectDensity(dt);
+	// // Step3: Calculate new density 
+	// mGrid.advectDensity(dt);
 
-	// Step4: Advect rendering particles
-	mGrid.advectRenderingParticles(dt);
+	// // Step4: Advect rendering particles
+	// mGrid.advectRenderingParticles(dt);
 
 	// PIC/FLIP
 	// Bridson's Sand algorithm
-	// mGrid.particleToGrid(dt);
+	mGrid.initMarkerGrid(false);
+	mGrid.particleToGrid(dt);
 	// mGrid.saveGridVelFLIP(dt);
 	// mGrid.addExternalForces(dt);
 	// mGrid.project(dt);

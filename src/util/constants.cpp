@@ -9,7 +9,7 @@ const int theMillisecondsPerFrame = 10;
 // // const int theDim[3] = {4,4,4};
 // #endif
 
-#define SMOKE_SIM
+// #define SMOKE_SIM
 #ifdef SMOKE_SIM
 const int theDim[3] = {32, 32, 1};
 #else
