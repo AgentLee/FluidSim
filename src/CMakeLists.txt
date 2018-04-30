@@ -14,9 +14,9 @@ set(SOURCE_FILES main.cpp
 		 util/fps.cpp
 		 util/constants.cpp
 		 util/basic_math.cpp)
-add_SMOKE_executable(SMOKE ${SOURCE_FILES})
+add_SMOKE_executable(SIM ${SOURCE_FILES})
 include_directories( ${OPENGL_INCLUDE_DIR}  ${GLUT_INCLUDE_DIRS} )
-target_link_libraries(SMOKE ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} )
-target_include_directories(SMOKE SYSTEM PUBLIC ${EIGEN3_INCLUDE_DIR})
-target_link_libraries(SMOKE eigen)
-target_link_libraries(SMOKE partio)
+target_link_libraries(SIM ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} )
+target_include_directories(SIM SYSTEM PUBLIC ${EIGEN3_INCLUDE_DIR})
+target_link_libraries(SIM eigen)
+target_link_libraries(SIM partio)

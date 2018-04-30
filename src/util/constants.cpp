@@ -9,12 +9,14 @@ const int theMillisecondsPerFrame = 10;
 // // const int theDim[3] = {4,4,4};
 // #endif
 
-#define SMOKE_SIM
-#ifdef SMOKE_SIM
-const int theDim[3] = {32, 32, 1};
-#else
-const int theDim[3] = {5, 5, 5};
-#endif
+// #define SMOKE_SIM
+// #ifdef SMOKE_SIM
+// const int theDim[3] = {32, 32, 1};
+// #else
+// const int theDim[3] = {5, 5, 5};
+// #endif
+
+// const int theDim[3] = {20, 12, 20};
 
 const double theCellSize = 0.5;
 

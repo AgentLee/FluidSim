@@ -2,6 +2,8 @@
 
 SmokeSim::SmokeSim()
 {
+	std::cout << "SMOKE" << std::endl;
+	
 	mFrameNum = 0;
 	mTotalFrameNum = 0;
 	mRecordEnabled = false;

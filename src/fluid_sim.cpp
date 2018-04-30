@@ -2,7 +2,7 @@
 
 FluidSim::FluidSim()
 {
-    std::cout << "PIC/FLIP" << std::endl;
+    std::cout << "FLUID" << std::endl;
 	mFrameNum = 0;
 	mTotalFrameNum = 0;
 	mRecordEnabled = false;

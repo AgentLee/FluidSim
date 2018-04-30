@@ -15,9 +15,12 @@ enum cellType
 };
 
 // NOTE: x -> cols, z -> rows, y -> stacks
-#ifdef SMOKE_SIM
+#if SMOKE_SIM
+const int theDim[3] = {32, 32, 1};
 MACGrid::RenderMode MACGrid::theRenderMode = SHEETS;
 #else
+const int theDim[3] = {20, 12, 20};
+const int container[3] = {10, 10, 10};
 MACGrid::RenderMode MACGrid::theRenderMode = PARTICLES;
 #endif
 bool MACGrid::theDisplayVel = false;//true
