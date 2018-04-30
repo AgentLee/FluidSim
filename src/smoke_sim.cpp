@@ -1,4 +1,3 @@
-#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "smoke_sim.h"
 
 SmokeSim::SmokeSim()
