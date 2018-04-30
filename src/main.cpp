@@ -1,4 +1,6 @@
+#include "simulator.h"
 #include "smoke_sim.h"
+#include "fluid_sim.h"
 #include "camera.h"
 #include "util/fps.h"
 #include "util/constants.h" 
@@ -8,8 +10,16 @@
 #include "util/basic_math.h"
 #include <string.h>
 
+enum SIMTYPE
+{
+    SMOKE = 0,
+    FLUID = 1
+};
+
 // Geometry and whatnot
+int simType = -1;
 SmokeSim theSmokeSim;
+FluidSim theFluidSim;
 Camera theCamera;
 mmc::FpsTracker theFpsTracker;
 
@@ -19,7 +29,6 @@ int theMenu = 0;
 int theButtonState = 0;
 int theModifierState = 0;
 bool isRunning = true;
-
 
 int savedWidth = 0;
 int savedHeight = 0;
@@ -101,22 +110,52 @@ void onKeyboardCb(unsigned char key, int x, int y)
    else if (key == '0') MACGrid::theRenderMode = MACGrid::CUBES;
    else if (key == '1') MACGrid::theRenderMode = MACGrid::SHEETS;
    else if (key == 'v') MACGrid::theDisplayVel = !MACGrid::theDisplayVel;
-   else if (key == 'r') theSmokeSim.setRecording(!theSmokeSim.isRecording(), savedWidth, savedHeight);
+   else if (key == 'r') {
+        switch(simType) 
+        {
+            case SMOKE:
+                theSmokeSim.setRecording(!theSmokeSim.isRecording(), savedWidth, savedHeight);
+                break;
+            case FLUID:
+                theFluidSim.setRecording(!theFluidSim.isRecording(), savedWidth, savedHeight);
+                break;
+        }
+    }
    else if (key == '>') isRunning = true;
    else if (key == '=') isRunning = false;
-   else if (key == '<') theSmokeSim.reset();
+   else if (key == '<') {
+        switch(simType) 
+        {
+            case SMOKE:
+                theSmokeSim.reset();
+                break;
+            case FLUID:
+                theFluidSim.reset();
+                break;
+        } 
+   }
    else if (key == 27) exit(0); // ESC Key
    glutPostRedisplay();
 }
 
 void onMenuCb(int value)
 {
-   switch (value)
-   {
-   case -1: exit(0);
-   case -6: theSmokeSim.reset(); break;
-   default: onKeyboardCb(value, 0, 0); break;
-   }
+    switch (value)
+    {
+    case -1: exit(0);
+    case -6: 
+        switch(simType) 
+        {
+            case SMOKE:
+                theSmokeSim.reset();
+                break;
+            case FLUID:
+                theFluidSim.reset();
+                break;
+        }
+        break;
+    default: onKeyboardCb(value, 0, 0); break;
+    }
 }
 
 void onKeyboardSpecialCb(int key, int x, int y)
@@ -125,7 +164,21 @@ void onKeyboardSpecialCb(int key, int x, int y)
 
 void onTimerCb(int value)
 {
-   if (isRunning) theSmokeSim.step();
+   if (isRunning) {
+    //    std::cout << simType << std::endl;
+
+       switch(simType)
+       {
+           case SMOKE:
+                theSmokeSim.step();
+                break;
+           case FLUID:
+                theFluidSim.step();
+                break;
+            default:
+                break;
+       }
+   }
    glutTimerFunc(theMillisecondsPerFrame, onTimerCb, 0);
    glutPostRedisplay();
 }
@@ -162,9 +215,21 @@ void drawOverlay()
      glRasterPos2f(0.01, 0.01);
      
      char info[1024];
-     sprintf(info, "Framerate: %3.1f  |  Frame: %u  |  %s", 
-         theFpsTracker.fpsAverage(), theSmokeSim.getTotalFrames(),
-         theSmokeSim.isRecording()? "Recording..." : "");
+    switch(simType) 
+    {
+        case SMOKE:
+            sprintf(info, "Framerate: %3.1f  |  Frame: %u  |  %s", 
+                    theFpsTracker.fpsAverage(), theSmokeSim.getTotalFrames(),
+                    theSmokeSim.isRecording()? "Recording..." : "");
+            break;
+        case FLUID:
+            sprintf(info, "Framerate: %3.1f  |  Frame: %u  |  %s", 
+                    theFpsTracker.fpsAverage(), theFluidSim.getTotalFrames(),
+                    theFluidSim.isRecording()? "Recording..." : "");
+            break;
+    }
+
+
  
      for (unsigned int i = 0; i < strlen(info); i++)
      {
@@ -181,7 +246,18 @@ void onDrawCb()
 	// Draw Scene and overlay
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	theCamera.draw();
-	theSmokeSim.draw(theCamera);
+
+    switch(simType) 
+    {
+        case SMOKE:
+            theSmokeSim.draw(theCamera);
+            break;
+        case FLUID:
+            theFluidSim.draw(theCamera);
+            break;
+    }
+    
+
 	drawOverlay();
 	glutSwapBuffers();
 }
@@ -204,14 +280,23 @@ void init(void)
     glCullFace(GL_BACK);
 }
 
-
 int main(int argc, char **argv)
 {
+    std::string _simType = argv[1];
+
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
     glutInitWindowSize(640, 480);
     glutInitWindowPosition(100, 100);
-    glutCreateWindow("Fluid Simulation - CIS563");
+    if(_simType == "smoke") {
+        glutCreateWindow("Smoke Simulation");
+        simType = SMOKE;
+    }
+    else if(_simType == "fluid") {
+        glutCreateWindow("Fluid Simulation");
+        simType = FLUID;
+    }
+
     glutDisplayFunc(onDrawCb);
     glutKeyboardFunc(onKeyboardCb);
     glutSpecialFunc(onKeyboardSpecialCb);
