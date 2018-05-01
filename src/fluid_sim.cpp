@@ -25,7 +25,7 @@ void FluidSim::reset()
 void FluidSim::initParticles(MACGrid &mGrid)
 {
     // Bridson recommends 8 particles per cell
-    int seed = 100;   
+    int seed = 8;   
     for(int k = 2; k < theContainer[2]; k++) {
         for(int j = theContainer[1] - 5; j < theContainer[1]; j++) {
             for(int i = 2; i < theContainer[0]; i++) {

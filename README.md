@@ -1,7 +1,10 @@
 # Fluid Simulator (Name TBD)
 
-## Smoke
-![Smoke Sim](images/smoke.gif)
+
+| Smoke         | PIC/FLIP           |
+| :-------------: |:-------------:|
+| ![Smoke Sim](images/smoke.gif)      | ![Fluid Sim](images/fluid.gif) |
+
 
 ## How to Run
 ```
@@ -14,8 +17,11 @@ make
 // Run program
 cd ..
 cd src
-./SMOKE
+./SIM <fluid or smoke>
 ```
+
+**To change to 3D Fluid**
+- In `main.cpp` comment out `#define TWO_DIM`
 
 ## References
 - [Siggraph 2007 Course Notes](https://www.cs.ubc.ca/~rbridson/fluidsimulation/fluids_notes.pdf)
