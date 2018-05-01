@@ -6,7 +6,7 @@ double rand(double LO, double HI) {
 
 FluidSim::FluidSim()
 {
-    std::cout << "FLUID" << std::endl;
+	mGrid.theRenderMode = MACGrid::PARTICLES;	
 	mFrameNum = 0;
 	mTotalFrameNum = 0;
 	mRecordEnabled = false;
@@ -17,6 +17,7 @@ FluidSim::FluidSim()
 void FluidSim::reset()
 {
 	mGrid.reset();
+	mGrid.particles.clear();
     initParticles(mGrid);
 	mTotalFrameNum = 0;
 }
@@ -24,7 +25,7 @@ void FluidSim::reset()
 void FluidSim::initParticles(MACGrid &mGrid)
 {
     // Bridson recommends 8 particles per cell
-    int seed = 8;   
+    int seed = 100;   
     for(int k = 2; k < theContainer[2]; k++) {
         for(int j = theContainer[1] - 5; j < theContainer[1]; j++) {
             for(int i = 2; i < theContainer[0]; i++) {

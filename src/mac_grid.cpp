@@ -3,17 +3,8 @@
 #undef max
 #undef min 
 
-#define SMOKE_SIM true
-// NOTE: x -> cols, z -> rows, y -> stacks
-#if SMOKE_SIM
-const int theDim[3] = {32, 32, 1};
-const int theContainer[3] = {10, 10, 10};
-MACGrid::RenderMode MACGrid::theRenderMode = SHEETS;
-#else
-const int theDim[3] = {20, 12, 20};
-const int theContainer[3] = {10, 10, 10};
-MACGrid::RenderMode MACGrid::theRenderMode = PARTICLES;
-#endif
+
+
 bool MACGrid::theDisplayVel = false;//true
 
 MACGrid::MACGrid()
@@ -343,10 +334,21 @@ void MACGrid::saveDensity(std::string filename){
 
 void MACGrid::draw(const Camera& c)
 {   
-   drawWireGrid();
-   if (theDisplayVel) drawVelocities();   
-   if (theRenderMode == CUBES) drawSmokeCubes(c);
-   else drawSmoke(c);
+    drawWireGrid();
+    switch(theRenderMode) 
+    {
+        case CUBES:
+            drawSmokeCubes(c);
+            break;
+        case SHEETS:
+            drawSmoke(c);
+            break;
+        case PARTICLES:
+            drawParticles(c);
+            break;
+        default:
+            break;
+    }
 }
 
 void MACGrid::drawVelocities()
@@ -564,6 +566,20 @@ void MACGrid::drawSmokeCubes(const Camera& c)
    {
       drawCube(it->second);
    }
+}
+
+void MACGrid::drawParticles(const Camera& c) 
+{
+    glEnable(GL_POINT_SMOOTH);
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glPointSize(3.f);
+	glBegin(GL_POINTS); 
+        FOR_EACH_PARTICLE 
+        {
+            Particle p = particles.at(i);
+            glVertex3d(p.position[0], p.position[1], p.position[2]);            
+        }
+	glEnd();
 }
 
 void MACGrid::drawWireGrid()

@@ -154,7 +154,7 @@ public:
 	std::vector<vec3> rendering_particles_vel;
 
 	enum RenderMode { CUBES, SHEETS, PARTICLES };
-	static RenderMode theRenderMode;
+	RenderMode theRenderMode;
 	static bool theDisplayVel;
 	
 	void saveSmoke(const char* fileName);

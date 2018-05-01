@@ -5,8 +5,7 @@ MACGrid target;
 
 SmokeSim::SmokeSim()
 {
-	std::cout << "SMOKE" << std::endl;
-	
+	mGrid.theRenderMode = MACGrid::SHEETS;
 	mFrameNum = 0;
 	mTotalFrameNum = 0;
 	mRecordEnabled = false;

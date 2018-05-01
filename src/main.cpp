@@ -10,6 +10,17 @@
 #include "util/basic_math.h"
 #include <string.h>
 
+// 2D Simulation
+#define TWO_DIM     // COMMENT THIS OUT FOR 3D
+#ifdef TWO_DIM
+const int theDim[3] = {32, 32, 1};
+const int theContainer[3] = {30, 30, 10};   // For fluid
+// 3D Simulation
+#else
+const int theDim[3] = {20, 12, 20};
+const int theContainer[3] = {10, 10, 10};   // For fluid
+#endif
+
 enum SIMTYPE
 {
     SMOKE = 0,
@@ -107,8 +118,8 @@ void onMouseCb(int button, int state, int x, int y)
 void onKeyboardCb(unsigned char key, int x, int y)
 {
    if (key == ' ') theCamera.reset();
-   else if (key == '0') MACGrid::theRenderMode = MACGrid::CUBES;
-   else if (key == '1') MACGrid::theRenderMode = MACGrid::SHEETS;
+//    else if (key == '0') MACGrid::theRenderMode = MACGrid::CUBES;
+//    else if (key == '1') MACGrid::theRenderMode = MACGrid::SHEETS;
    else if (key == 'v') MACGrid::theDisplayVel = !MACGrid::theDisplayVel;
    else if (key == 'r') {
         switch(simType) 
