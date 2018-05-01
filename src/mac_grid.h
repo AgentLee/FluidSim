@@ -17,6 +17,10 @@
 #include "grid_data.h"
 #include "grid_data_matrix.h" 
 #include "particle.h"
+#include <Eigen/Core>
+#include <Eigen/IterativeLinearSolvers>
+#include <Eigen/Sparse>
+#include <Eigen/Cholesky>
 
 class Camera;
 
@@ -41,18 +45,35 @@ public:
 	void advectDensity(double dt);
 	void advectRenderingParticles(double dt);
 
-	// PIC/FLIP based on Bridson's Sand paper
-	void initParticles();
 	void initMarkerGrid();
-	void particleToGrid(double dt);
-	double kernel(const int &_x, const int &_y, const int &_z);
-	double kernelHelper(const double &r);
-	void saveGridVelFLIP(double dt);
-	void updateVelFLIP(double dt);
-	void gridToParticle(double dt);
-	void advectParticle(double dt);
+	vec3 integrate(const vec3 &pos, const vec3 &vel, const double &dt)
+	{
+		// RK2
+		vec3 newPos = vec3(0,0,0);
+		vec3 k1 = vel * pos * dt / 2;
+		vec3 k2 = vel * (pos + k1) * dt;
+		newPos = pos + vel * dt;
 
-protected:
+		return clamp(newPos);
+	}
+
+	int getID(int i, int j, int k)
+	{
+		int x = i;
+		int y = j * theDim[0];
+		int z = k * theDim[0] * theDim[1];
+
+		return x + y + z;
+	}
+
+	vec3& clamp(vec3 &pos)
+	{
+		pos[0] = max(0 - EPSILON, min(theDim[X] * theCellSize, pos[0] + EPSILON));
+		pos[1] = max(0 - EPSILON, min(theDim[Y] * theCellSize, pos[1] + EPSILON));
+		pos[2] = max(0 - EPSILON, min(theDim[Z] * theCellSize, pos[2] + EPSILON));
+	
+		return pos;
+	}
 
 	// Setup
 	void initialize();
@@ -120,6 +141,8 @@ protected:
 	GridDataZ mWcopy; 
 
 	std::vector<Particle> particles;
+	std::vector<Particle> particlesCopy;
+	std::vector<Particle> particlesCopyPIC;
 	GridData markerGrid;
 
 	GridDataMatrix AMatrix;

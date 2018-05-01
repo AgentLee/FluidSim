@@ -69,7 +69,7 @@ void Simulator::grabScreen()
             bitmapData + (recordWidth * 3 * ((recordHeight-1)-i)));
     }
     char anim_filename[2048];
-    snprintf(anim_filename, 2048, "../records/smoke_%04d.png", mFrameNum); 
+    snprintf(anim_filename, 2048, "../records/fluid_%04d.png", mFrameNum); 
     stbi_write_png(anim_filename, recordWidth, recordHeight, 3, bitmapData, recordWidth * 3);
     delete [] bitmapData;
 

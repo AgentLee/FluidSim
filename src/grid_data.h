@@ -46,8 +46,6 @@ public:
    // corresponding to it
    virtual void getCell(const vec3& pt, int& i, int& j, int& k);
 
-protected:
-
    virtual vec3 worldToSelf(const vec3& pt) const;
    double mDfltValue;
    vec3 mMax;

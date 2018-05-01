@@ -25,6 +25,13 @@ public:
     int getTotalFrames();
     void drawAxes();
     void grabScreen();
+  
+    enum cellType 
+    {
+        SOLID   = 0,
+        FLUID   = 1,
+        AIR     = 2,
+    };
 
 protected:
     MACGrid mGrid;

@@ -17,50 +17,14 @@ enum cellType
 // NOTE: x -> cols, z -> rows, y -> stacks
 #if SMOKE_SIM
 const int theDim[3] = {32, 32, 1};
+const int theContainer[3] = {10, 10, 10};
 MACGrid::RenderMode MACGrid::theRenderMode = SHEETS;
 #else
 const int theDim[3] = {20, 12, 20};
-const int container[3] = {10, 10, 10};
+const int theContainer[3] = {10, 10, 10};
 MACGrid::RenderMode MACGrid::theRenderMode = PARTICLES;
 #endif
 bool MACGrid::theDisplayVel = false;//true
-
-#define FOR_EACH_CELL \
-   for(int k = 0; k < theDim[MACGrid::Z]; ++k)  \
-      for(int j = 0; j < theDim[MACGrid::Y]; ++j) \
-         for(int i = 0; i < theDim[MACGrid::X]; ++i) 
-
-#define FOR_EACH_CELL_REVERSE \
-   for(int k = theDim[MACGrid::Z] - 1; k >= 0; --k)  \
-      for(int j = theDim[MACGrid::Y] - 1; j >= 0; --j) \
-         for(int i = theDim[MACGrid::X] - 1; i >= 0; --i) 
-
-#define FOR_EACH_FACE \
-   for(int k = 0; k < theDim[MACGrid::Z]+1; ++k) \
-      for(int j = 0; j < theDim[MACGrid::Y]+1; ++j) \
-         for(int i = 0; i < theDim[MACGrid::X]+1; ++i) 
-
-#define FOR_EACH_FACEX \
-   for(int k = 0; k < theDim[MACGrid::Z]; ++k) \
-      for(int j = 0; j < theDim[MACGrid::Y]; ++j) \
-         for(int i = 0; i < theDim[MACGrid::X] + 1; i) 
-
-#define FOR_EACH_FACEY \
-   for(int k = 0; k < theDim[MACGrid::Z]; ++k) \
-      for(int j = 0; j < theDim[MACGrid::Y] + 1; ++j) \
-         for(int i = 0; i < theDim[MACGrid::X]; ++i) 
-
-#define FOR_EACH_FACEZ \
-   for(int k = 0; k < theDim[MACGrid::Z] + 1; ++k) \
-      for(int j = 0; j < theDim[MACGrid::Y]; ++j) \
-         for(int i = 0; i < theDim[MACGrid::X]; ++i) 
-
-#define FOR_EACH_PARTICLE \
-    for(int i = 0; i < particles.size(); i++) \
-
-double rand(double LO, double HI) {
-	return LO + (rand()) / ((RAND_MAX / (HI - LO)));
-}
 
 MACGrid::MACGrid()
 {
@@ -69,32 +33,27 @@ MACGrid::MACGrid()
 
 MACGrid::MACGrid(const MACGrid& orig)
 {
-    mU = orig.mU;
-    mV = orig.mV;
-    mW = orig.mW;
-    mP = orig.mP;
-    mD = orig.mD;
-    mT = orig.mT;
-    // mUcopy = orig.mUcopy;
-    // mUcopy = orig.mVcopy;
-    // mUcopy = orig.mWcopy;
+   mU = orig.mU;
+   mV = orig.mV;
+   mW = orig.mW;
+   mP = orig.mP;
+   mD = orig.mD;
+   mT = orig.mT;
 }
 
 MACGrid& MACGrid::operator=(const MACGrid& orig)
 {
-    if (&orig == this)
-    {
-        return *this;
-    }
-    mU = orig.mU;
-    mV = orig.mV;
-    mW = orig.mW;
-    mP = orig.mP;
-    mD = orig.mD;
-    mT = orig.mT;   
-    // mUcopy = orig.mUcopy;
-    // mUcopy = orig.mVcopy;
-    // mUcopy = orig.mWcopy;
+   if (&orig == this)
+   {
+      return *this;
+   }
+   mU = orig.mU;
+   mV = orig.mV;
+   mW = orig.mW;
+   mP = orig.mP;
+   mD = orig.mD;
+   mT = orig.mT;   
+
    return *this;
 }
 
@@ -104,22 +63,15 @@ MACGrid::~MACGrid()
 
 void MACGrid::reset()
 {
-    initMarkerGrid();
-    initParticles();
+   mU.initialize();
+   mV.initialize();
+   mW.initialize();
+   mP.initialize();
+   mD.initialize();
+   mT.initialize(0.0);
 
-    mU.initialize();
-    mV.initialize();
-    mW.initialize();
-    mP.initialize();
-    mD.initialize();
-    mT.initialize(0.0);
-
-    mUcopy.initialize();
-    mVcopy.initialize();
-    mWcopy.initialize();
-
-    calculateAMatrix();
-    calculatePreconditioner(AMatrix);
+   calculateAMatrix();
+   calculatePreconditioner(AMatrix);
 }
 
 void MACGrid::initialize()
@@ -130,8 +82,8 @@ void MACGrid::initialize()
 void MACGrid::updateSources()
 {
     // Set initial values for density, temperature, velocity
-    for(int i=0; i<1;i++){
-        for(int j=0; j<1; j++){
+    for(int i=6; i<12;i++){
+        for(int j=0; j<5; j++){
             mV(i,j+1,0) = 2.0;
             mD(i,j,0) = 1.0;
             mT(i,j,0) = 1.0;
@@ -143,9 +95,9 @@ void MACGrid::updateSources()
     }
 
 	// Refresh particles in source.
-	for(int i=0; i<1; i++) {
-		for (int j = 0; j < 1; j++) {
-			for (int k = 0; k <= 2; k++) {
+	for(int i=6; i<12; i++) {
+		for (int j = 0; j < 5; j++) {
+			for (int k = 0; k <= 0; k++) {
 				vec3 cell_center(theCellSize*(i+0.5), theCellSize*(j+0.5), theCellSize*(k+0.5));
 				for(int p=0; p<10; p++) {
                     double a = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
@@ -160,184 +112,6 @@ void MACGrid::updateSources()
 	}
 }
 
-void MACGrid::initParticles()
-{
-    // Bridson recommends 8 particles per cell
-    int seed = 8;   
-	for (double i = theCellSize; i < (theDim[X]-1)*theCellSize; i += theCellSize) {
-		for (double j = theCellSize; j < (theDim[Y]-1)*theCellSize; j+= theCellSize) {
-			for (double k = theCellSize; k < (theDim[Z]-1)*theCellSize; k+= theCellSize) {
-				for (int c = 0; c < seed; c++) {
-					vec3 pos = vec3(rand(i, i + theCellSize), rand(j, j + theCellSize), rand(k, k + theCellSize));
-					vec3 vel = vec3(0,0,0);
-					Particle p = Particle(pos, vel);
-					particles.push_back(p);
-					// std::cout << pos[0] << " " << pos[1] << " " << pos[2] << std::endl;
-				}
-			}
-		}
-	}
-}
-
-void MACGrid::initMarkerGrid()
-{   
-    int boundX = theDim[MACGrid::X];
-    int boundY = theDim[MACGrid::Y];
-    int boundZ = theDim[MACGrid::Z];
-    if(SMOKE_SIM) {
-        // Assume everything in bounds is a fluid cell.
-        markerGrid.initialize(FLUID);
-
-        // FOR_EACH_CELL
-        // {
-        //     if(i == 0) {
-        //         markerGrid(i, j, k) = SOLID;
-        //     }
-
-        //     if(j == 0) {
-        //         markerGrid(i, j, k) = SOLID;
-        //     }
-
-        //     if(k == 0) {
-        //         markerGrid(i, j, k) = SOLID;
-        //     }
-
-        //     if(i >= boundX) {
-        //         markerGrid(i, j, k) = SOLID;
-        //     }
-
-        //     if(j >= boundY) {
-        //         markerGrid(i, j, k) = SOLID;
-        //     }
-
-        //     if(k >= boundZ) {
-        //         markerGrid(i, j, k) = SOLID;
-        //     }
-        // }
-
-        return;
-    }
-    else {
-        // We havent advected any particles in the grid yet,
-        // so everything in bounds is an air cell.
-        markerGrid.initialize(AIR);
-    }    
-    
-    FOR_EACH_CELL
-    {
-        // 2D
-        if( i == 0 || i - 1 == boundX || 
-            j == 0 || j - 1 == boundY) 
-        {
-            markerGrid(i, j, k) = SOLID;
-        }
-
-        // 3D 
-        if(boundZ > 1) {
-            if(k == 0 || k - 1 == boundZ) {
-                markerGrid(i, j, k) = SOLID;
-            }
-        }
-    }
-
-    // #define _DEBUG
-    #ifdef _DEBUG
-    {
-        FOR_EACH_CELL
-        {
-            if(markerGrid(i, j, k) == AIR) {
-                std::cout << "AIR: " << i << " " << j << " " << k << std::endl;
-            }
-
-            if(markerGrid(i, j, k) == FLUID) {
-                std::cout << "FLUID: " << i << " " << j << " " << k << std::endl;
-            }
-
-            if(markerGrid(i, j, k) == SOLID) {
-                std::cout << "SOLID: " << i << " " << j << " " << k << std::endl;
-            }
-        }
-    }
-    #endif
-}
-
-double MACGrid::kernelHelper(const double &r)
-{
-    if(r >= 0 && r <= 1) {
-        return 1 - r;
-    }
-    else if(r >= -1 && r >= 0) {
-        return 1 + r;
-    }
-    else {
-        return 0;
-    }
-}
-
-double MACGrid::kernel(const int &_x, const int &_y, const int &_z) 
-{
-    double x = _x / theCellSize;
-    double y = _y / theCellSize;
-    double z = _z / theCellSize;
-
-    double weight = kernelHelper(x) * kernelHelper(y) * kernelHelper(z);
-
-    return weight;
-}
-
-/*
- * Calculate a weighted average of nearby particles in a cell
- * using a trilinear interpolation kernel function.
- */
-void MACGrid::particleToGrid(double dt)
-{
-    FOR_EACH_PARTICLE 
-    {
-        // Get the particle's position in the velocity components
-        // Calculate kernel weight
-    }
-
-    FOR_EACH_FACEX
-    {
-        // Divide by kernel weight
-    }
-
-    FOR_EACH_FACEY
-    {
-        // Divide by kernel weight
-    }
-
-    FOR_EACH_FACEZ
-    {
-        // Divide by kernel weight
-    }
-}
-
-void MACGrid::saveGridVelFLIP(double dt)
-{
-    // TODO
-    FOR_EACH_FACE
-    {
-        mUcopy(i, j, k) = mU(i, j, k);
-        mVcopy(i, j, k) = mV(i, j, k);
-        mWcopy(i, j, k) = mW(i, j, k);
-    }
-}
-
-void MACGrid::updateVelFLIP(double dt)
-{
-    // TODO
-}
-
-void MACGrid::gridToParticle(double dt) 
-{
-    // TODO
-}
-
-void MACGrid::advectParticle(double dt)
-{
-    // TODO
-}
 
 /*
  * Want to figure out new value of q at some grid point.
@@ -573,22 +347,10 @@ void MACGrid::applyVorticityConfinement(vec3 &fConf, int &i, int &j, int &k)
     }
 }
 
-void MACGrid::computeGravity(double dt)
-{
-    FOR_EACH_CELL
-    {
-        mV(i, j, k) += theGravity;
-    }  
-}
-
 void MACGrid::addExternalForces(double dt)
 {
-    #if SMOKE_SIM
-    computeBouyancy(dt);
-    computeVorticityConfinement(dt);
-    #else
-    computeGravity(dt);
-    #endif
+   computeBouyancy(dt);
+   computeVorticityConfinement(dt);
 }
 
 void MACGrid::computeDivergence(GridData &d)
@@ -596,68 +358,43 @@ void MACGrid::computeDivergence(GridData &d)
     FOR_EACH_FACE
     {
         // Should only do this for fluid cells
-        // if(isValidCell(i, j, k)) {
-            if(markerGrid(i, j, k) == FLUID) {
-                // Use finite differences to approximate the divergence
-                double uPlus    = mU(i + 1, j, k);
-                double uMinus   = mU(i, j, k);
-                double vPlus    = mV(i, j + 1, k);
-                double vMinus   = mV(i, j, k);
-                double wPlus    = mW(i, j, k + 1);
-                double wMinus   = mW(i, j, k);
+        {
+            // Use finite differences to approximate the divergence
+            double uPlus    = mU(i + 1, j, k);
+            double uMinus   = mU(i, j, k);
+            double vPlus    = mV(i, j + 1, k);
+            double vMinus   = mV(i, j, k);
+            double wPlus    = mW(i, j, k + 1);
+            double wMinus   = mW(i, j, k);
 
-                // Divergence estimates the rate that fluid coming in and out of a cell.
-                // The velocity components at the edges should be 0.
-
-                // if(markerGrid(i - 1, j, k) == SOLID) {
-                //     uMinus = 0;
-                // }
-                // if(markerGrid(i + 1, j, k) == SOLID) {
-                //     uPlus = 0;
-                // }
-
-                // if(markerGrid(i, j - 1, k) == SOLID) {
-                //     vMinus = 0;
-                // }
-                // if(markerGrid(i, j + 1, k) == SOLID) {
-                //     vPlus = 0;
-                // }
-
-                // if(markerGrid(i, j, k - 1) == SOLID) {
-                //     wMinus = 0;
-                // }
-                // if(markerGrid(i, j, k + 1) == SOLID) {
-                //     wPlus = 0;
-                // }
-                
-
-                if(i == 0) {
-                    uMinus = 0;
-                }
-                if(i + 1 == theDim[MACGrid::X]) {
-                    uPlus = 0;
-                }
-
-                if(j == 0) {
-                    vMinus = 0;
-                }
-                if(j + 1 == theDim[MACGrid::Y]) {
-                    vPlus = 0;
-                }
-
-                if(k == 0) {
-                    wMinus = 0;
-                }
-                if(k + 1 == theDim[MACGrid::Z]) {
-                    wPlus = 0;
-                }
-                
-                // RHS of 4.22
-                // In the Fluid Simulation BOOK, Bridson says that we're only interested in the negative divergence.
-                double scale = 1 / theCellSize;
-                d(i, j, k) = -scale * ((uPlus - uMinus) + (vPlus - vMinus) + (wPlus - wMinus));
+            // Divergence estimates the rate that fluid coming in and out of a cell.
+            // The velocity components at the edges should be 0.
+            if(i == 0) {
+                uMinus = 0;
             }
-        // }
+            if(i + 1 == theDim[MACGrid::X]) {
+                uPlus = 0;
+            }
+
+            if(j == 0) {
+                vMinus = 0;
+            }
+            if(j + 1 == theDim[MACGrid::Y]) {
+                vPlus = 0;
+            }
+
+            if(k == 0) {
+                wMinus = 0;
+            }
+            if(k + 1 == theDim[MACGrid::Z]) {
+                wPlus = 0;
+            }
+            
+            // RHS of 4.22
+            // In the Fluid Simulation BOOK, Bridson says that we're only interested in the negative divergence.
+            double scale = 1 / theCellSize;
+            d(i, j, k) = -scale * ((uPlus - uMinus) + (vPlus - vMinus) + (wPlus - wMinus));
+        }   
     }
 }
 
@@ -677,6 +414,11 @@ void MACGrid::project(double dt)
     // 2. Construct A 
     // 3. Solve for p
     // 4. Subtract pressure from our velocity and save in target
+
+    // TODO: Get rid of these 3 lines after you implement yours
+    // target.mU = mU;
+    // target.mV = mV;
+    // target.mW = mW;
 
     // TODO: Your code is here. It solves for a pressure field and modifies target.mU,mV,mW for all faces.
     GridData d;
@@ -700,10 +442,6 @@ void MACGrid::project(double dt)
         // LHS is (dt / (density * cellsize * cellsize) * p
         // RHS is inv(A) * d
         // Need to divide by the constant value to truly solve for pressure
-
-        // ALSO pg31
-        // We divide by the pressure constant because to build the A matrix
-        // we want to get rid of this term by dividng by both sides.
         p(i, j, k) /= pressureConstant;
         target.mP(i, j, k) = p(i, j, k);
     }
@@ -712,68 +450,32 @@ void MACGrid::project(double dt)
     double scale = dt / (theAirDensity * theCellSize);
     FOR_EACH_FACE
     {
-        if(SMOKE_SIM) {
-            if(isValidFace(MACGrid::X, i, j, k)) {
-                if(i - 1 < 0 || i >= theDim[MACGrid::X]) {
-                    target.mU(i, j, k) = 0;
-                }
-                else {
-                    target.mU(i, j, k) -= scale * (p(i, j, k) - p(i - 1, j, k));
-                }
+        if(isValidFace(MACGrid::X, i, j, k)) {
+            if(i - 1 < 0 || i >= theDim[MACGrid::X]) {
+                target.mU(i, j, k) = 0;
             }
-
-            if(isValidFace(MACGrid::Y, i, j, k)) {
-                if(j - 1 < 0 || j >= theDim[MACGrid::Y]) {
-                    target.mV(i, j, k) = 0;
-                }
-                else {
-                    target.mV(i, j, k) -= scale * (p(i, j, k) - p(i, j - 1, k));
-                }
-            }
-
-            if(isValidFace(MACGrid::Z, i, j, k)) {
-                if(k - 1 < 0 || k >= theDim[MACGrid::Z]) {
-                    target.mW(i, j, k) = 0;
-                }
-                else {
-                    target.mW(i, j, k) -= scale * (p(i, j, k) - p(i, j, k - 1));
-                }
+            else {
+                target.mU(i, j, k) -= scale * (p(i, j, k) - p(i - 1, j, k));
             }
         }
-        // // else {
-        //     // if(isValidFace(MACGrid::X, i, j, k)) {
-        //         if(markerGrid(i - 1, j, k) == FLUID || markerGrid(i, j, k) == FLUID) {
-        //             if(markerGrid(i - 1, j, k) == SOLID ||  markerGrid(i + 1, j, k) == SOLID) {
-        //                 target.mU(i, j, k) = 0;
-        //             }
-        //             else {
-        //                 target.mU(i, j, k) -= scale * (p(i, j, k) - p(i - 1, j, k));
-        //             }
-        //         }
-        //     // }
 
-        //     // if(isValidFace(MACGrid::Y, i, j, k)) {
-        //         if(markerGrid(i, j - 1, k) == FLUID || markerGrid(i, j, k) == FLUID) {
-        //             if(markerGrid(i, j - 1, k) == SOLID || markerGrid(i, j + 1, k) == SOLID) {
-        //                 target.mU(i, j, k) = 0;
-        //             }
-        //             else {
-        //                 target.mU(i, j, k) -= scale * (p(i, j, k) - p(i, j - 1, k));
-        //             }
-        //         }
-        //     // }
+        if(isValidFace(MACGrid::Y, i, j, k)) {
+            if(j - 1 < 0 || j >= theDim[MACGrid::Y]) {
+                target.mV(i, j, k) = 0;
+            }
+            else {
+                target.mV(i, j, k) -= scale * (p(i, j, k) - p(i, j - 1, k));
+            }
+        }
 
-        //     // if(isValidFace(MACGrid::Z, i, j, k)) {
-        //         if(markerGrid(i, j, k - 1) == FLUID || markerGrid(i, j, k) == FLUID) {
-        //             if(markerGrid(i, j, k - 1) == SOLID || markerGrid(i, j, k + 1) == SOLID) {
-        //                 target.mU(i, j, k) = 0;
-        //             }
-        //             else {
-        //                 target.mU(i, j, k) -= scale * (p(i, j, k) - p(i, j, k - 1));
-        //             }
-        //         }
-        //     // }
-        // // }
+        if(isValidFace(MACGrid::Z, i, j, k)) {
+            if(k - 1 < 0 || k >= theDim[MACGrid::Z]) {
+                target.mW(i, j, k) = 0;
+            }
+            else {
+                target.mW(i, j, k) -= scale * (p(i, j, k) - p(i, j, k - 1));
+            }
+        }
     }
 
     // #define _DEBUG
@@ -913,8 +615,9 @@ vec3 MACGrid::getCenter(int i, int j, int k)
    return vec3(x, y, z);
 }
 
-vec3 MACGrid::getRewoundPosition(const vec3 & currentPosition, const double dt) 
-{
+
+vec3 MACGrid::getRewoundPosition(const vec3 & currentPosition, const double dt) {
+
 	/*
 	// EULER (RK1):
 	vec3 currentVelocity = getVelocity(currentPosition);
@@ -933,7 +636,9 @@ vec3 MACGrid::getRewoundPosition(const vec3 & currentPosition, const double dt)
 	vec3 betterRewoundPosition = currentPosition - averageVelocity * dt;
 	vec3 clippedBetterRewoundPosition = clipToGrid(betterRewoundPosition, currentPosition);
 	return clippedBetterRewoundPosition;
+
 }
+
 
 vec3 MACGrid::clipToGrid(const vec3& outsidePoint, const vec3& insidePoint) {
 	/*
@@ -1031,7 +736,6 @@ bool MACGrid::isValidFace(int dimension, int i, int j, int k)
 	return true;
 }
 
-
 vec3 MACGrid::getFacePosition(int dimension, int i, int j, int k)
 {
 	if (dimension == 0) {
@@ -1046,36 +750,32 @@ vec3 MACGrid::getFacePosition(int dimension, int i, int j, int k)
 
 }
 
-// pg31
 void MACGrid::calculateAMatrix() 
 {
-    // Don't worry about the pressure constant here.
-    // Assume that it's divide by both sides, 
-    // therefore pressure gets divided by it later.
 	FOR_EACH_CELL 
     {
-        int numFluidNeighbors = 0;
-		if (isValidCell(i - 1, j, k) && markerGrid(i - 1, j, k) == FLUID) {
+		int numFluidNeighbors = 0;
+		if (i-1 >= 0) {
 			AMatrix.plusI(i-1,j,k) = -1;
 			numFluidNeighbors++;
 		}
-		if (isValidCell(i + 1, j, k) && markerGrid(i + 1, j, k) == FLUID) {
+		if (i+1 < theDim[MACGrid::X]) {
 			AMatrix.plusI(i,j,k) = -1;
 			numFluidNeighbors++;
 		}
-		if (isValidCell(i, j - 1, k) && markerGrid(i, j - 1, k) == FLUID) {
+		if (j-1 >= 0) {
 			AMatrix.plusJ(i,j-1,k) = -1;
 			numFluidNeighbors++;
 		}
-		if (isValidCell(i, j + 1, k) && markerGrid(i, j + 1, k) == FLUID) {
+		if (j+1 < theDim[MACGrid::Y]) {
 			AMatrix.plusJ(i,j,k) = -1;
 			numFluidNeighbors++;
 		}
-		if (isValidCell(i, j, k - 1) && markerGrid(i, j, k - 1) == FLUID) {
+		if (k-1 >= 0) {
 			AMatrix.plusK(i,j,k-1) = -1;
 			numFluidNeighbors++;
 		}
-		if (isValidCell(i, j, k + 1) && markerGrid(i, j, k + 1) == FLUID) {
+		if (k+1 < theDim[MACGrid::Z]) {
 			AMatrix.plusK(i,j,k) = -1;
 			numFluidNeighbors++;
 		}
@@ -1170,7 +870,7 @@ void MACGrid::calculatePreconditioner(const GridDataMatrix & A) {
 }
 
 /*
- * pg37 course notes
+ * pg37 in course notes
  */
 void MACGrid::applyPreconditioner(const GridData & r, const GridDataMatrix & A, GridData & z) {
 
@@ -1259,8 +959,8 @@ double MACGrid::maxMagnitude(const GridData & vector) {
 }
 
 
-void MACGrid::apply(const GridDataMatrix & matrix, const GridData & vector, GridData & result) 
-{
+void MACGrid::apply(const GridDataMatrix & matrix, const GridData & vector, GridData & result) {
+	
 	FOR_EACH_CELL { // For each row of the matrix.
 
 		double diag = 0;
@@ -1284,8 +984,7 @@ void MACGrid::apply(const GridDataMatrix & matrix, const GridData & vector, Grid
 
 }
 
-void MACGrid::saveSmoke(const char* fileName) 
-{
+void MACGrid::saveSmoke(const char* fileName) {
 	std::ofstream fileOut(fileName);
 	if (fileOut.is_open()) {
 		FOR_EACH_CELL {
@@ -1295,8 +994,7 @@ void MACGrid::saveSmoke(const char* fileName)
 	}
 }
 
-void MACGrid::saveParticle(std::string filename)
-{
+void MACGrid::saveParticle(std::string filename){
 	Partio::ParticlesDataMutable *parts = Partio::create();
 	Partio::ParticleAttribute posH, vH;
 	posH = parts->addAttribute("position", Partio::VECTOR, 3);
@@ -1317,8 +1015,7 @@ void MACGrid::saveParticle(std::string filename)
 	parts->release();
 }
 
-void MACGrid::saveDensity(std::string filename)
-{
+void MACGrid::saveDensity(std::string filename){
 	Partio::ParticlesDataMutable *density_field = Partio::create();
 	Partio::ParticleAttribute posH, rhoH;
 	posH = density_field->addAttribute("position", Partio::VECTOR, 3);
@@ -1340,25 +1037,10 @@ void MACGrid::saveDensity(std::string filename)
 
 void MACGrid::draw(const Camera& c)
 {   
-    drawWireGrid();
-    if (theDisplayVel) {
-        drawVelocities();
-    }   
-    
-    switch(theRenderMode) 
-    {
-        case CUBES:
-            drawSmokeCubes(c);
-            break;
-        case SHEETS:
-            drawSmoke(c);
-            break;
-        case PARTICLES:
-            drawParticles(c);
-            break;
-        default:
-            break;
-    }
+   drawWireGrid();
+   if (theDisplayVel) drawVelocities();   
+   if (theRenderMode == CUBES) drawSmokeCubes(c);
+   else drawSmoke(c);
 }
 
 void MACGrid::drawVelocities()
@@ -1576,19 +1258,6 @@ void MACGrid::drawSmokeCubes(const Camera& c)
    {
       drawCube(it->second);
    }
-}
-
-void MACGrid::drawParticles(const Camera& c) 
-{
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glPointSize(3.f);
-	glBegin(GL_POINTS); 
-        FOR_EACH_PARTICLE 
-        {
-            Particle p = particles.at(i);
-            glVertex3d(p.position[0], p.position[1], p.position[2]);            
-        }
-	glEnd();
 }
 
 void MACGrid::drawWireGrid()
