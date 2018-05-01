@@ -291,22 +291,39 @@ void MACGrid::saveSmoke(const char* fileName) {
 	}
 }
 
-void MACGrid::saveParticle(std::string filename){
+void MACGrid::saveParticle(std::string filename, bool fluidsim)
+{
 	Partio::ParticlesDataMutable *parts = Partio::create();
 	Partio::ParticleAttribute posH, vH;
 	posH = parts->addAttribute("position", Partio::VECTOR, 3);
 	vH = parts->addAttribute("v", Partio::VECTOR, 3);
-	for (unsigned int i = 0; i < rendering_particles.size(); i++)
-	{
-		int idx = parts->addParticle();
-		float *p = parts->dataWrite<float>(posH, idx);
-		float *v = parts->dataWrite<float>(vH, idx);
-		for (int k = 0; k < 3; k++)
-		{
-			p[k] = rendering_particles[i][k];
-			v[k] = rendering_particles_vel[i][k];
-		}
-	}
+
+    if(fluidsim) {
+        for (unsigned int i = 0; i < particles.size(); i++)
+        {
+            int idx = parts->addParticle();
+            float *p = parts->dataWrite<float>(posH, idx);
+            float *v = parts->dataWrite<float>(vH, idx);
+            for (int k = 0; k < 3; k++)
+            {
+                p[k] = particles.at(i).position[k];
+                v[k] = particles.at(i).velocity[k];
+            }
+        }
+    }
+    else {
+        for (unsigned int i = 0; i < rendering_particles.size(); i++)
+        {
+            int idx = parts->addParticle();
+            float *p = parts->dataWrite<float>(posH, idx);
+            float *v = parts->dataWrite<float>(vH, idx);
+            for (int k = 0; k < 3; k++)
+            {
+                p[k] = rendering_particles[i][k];
+                v[k] = rendering_particles_vel[i][k];
+            }
+        }
+    }
 	
 	Partio::write(filename.c_str(), *parts);
 	parts->release();

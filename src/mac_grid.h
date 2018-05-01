@@ -158,7 +158,7 @@ public:
 	static bool theDisplayVel;
 	
 	void saveSmoke(const char* fileName);
-	void saveParticle(std::string filename);
+	void saveParticle(std::string filename, bool fluidsim);
 	void saveDensity(std::string filename);
 };
 

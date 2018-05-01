@@ -58,7 +58,7 @@ void Simulator::grabScreen()
     if (mFrameNum > 9999) exit(0);
 
     // Save density field to a .bgeo file
-    std::string densityFile = "../records/DensityFrame" + std::to_string(mFrameNum) + ".bgeo";
+    std::string densityFile = "../records/FluidDensityFrame" + std::to_string(mFrameNum) + ".bgeo";
     mGrid.saveDensity(densityFile);
 
     // Save an image:
@@ -73,9 +73,10 @@ void Simulator::grabScreen()
     stbi_write_png(anim_filename, recordWidth, recordHeight, 3, bitmapData, recordWidth * 3);
     delete [] bitmapData;
 
+    #define FLUIDSIM true
     // Dump out rendering particle data in .bgeo file
-    std::string particleFile = "../records/frame" + std::to_string(mFrameNum) + ".bgeo";
-    mGrid.saveParticle(particleFile);
+    std::string particleFile = "../records/fluidframe" + std::to_string(mFrameNum) + ".bgeo";
+    mGrid.saveParticle(particleFile, FLUIDSIM);
 
     mFrameNum++;
 }

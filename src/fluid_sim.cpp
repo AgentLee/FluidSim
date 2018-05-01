@@ -153,7 +153,63 @@ void FluidSim::averageVelocities(GridData &velNeighbor, GridData &weight, const 
     rz = z - ((k + 1) * theCellSize);
     kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
     velNeighbor(i + 1, j + 1, k + 1) += vel * kernel;
-    weight(i + 1, j + 1, k + 1) += kernel;   
+    weight(i + 1, j + 1, k + 1) += kernel;  
+
+	// Left cell
+    // rx = x - ((i - 1) * theCellSize);
+    // ry = y - ((j) * theCellSize);
+    // rz = z - ((k) * theCellSize);
+    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    // velNeighbor(i - 1, j, k) += vel * kernel;
+    // weight(i + 1, j, k) += kernel;       
+
+    // // Bottom left cell
+    // rx = x - ((i - 1) * theCellSize);
+    // ry = y - ((j - 1) * theCellSize);
+    // rz = z - ((k) * theCellSize);
+    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    // velNeighbor(i - 1, j - 1, k) += vel * kernel;
+    // weight(i + 1, j + 1, k) += kernel;    
+
+    // // Bottom cell
+    // rx = x - ((i) * theCellSize);
+    // ry = y - ((j - 1) * theCellSize);
+    // rz = z - ((k) * theCellSize);
+    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    // velNeighbor(i, j - 1, k) += vel * kernel;
+    // weight(i, j - 1, k) += kernel;     
+
+    // // Bottom back cell
+    // rx = x - ((i) * theCellSize);
+    // ry = y - ((j - 1) * theCellSize);
+    // rz = z - ((k - 1) * theCellSize);
+    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    // velNeighbor(i, j - 1, k - 1) += vel * kernel;
+    // weight(i, j - 1, k - 1) += kernel;     
+
+    // // Back cell
+    // rx = x - ((i) * theCellSize);
+    // ry = y - ((j) * theCellSize);
+    // rz = z - ((k - 1) * theCellSize);
+    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    // velNeighbor(i, j, k - 1) += vel * kernel;
+    // weight(i, j, k - 1) += kernel;   
+
+    // // Back left cell
+    // rx = x - ((i - 1) * theCellSize);
+    // ry = y - ((j) * theCellSize);
+    // rz = z - ((k - 1) * theCellSize);
+    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    // velNeighbor(i - 1, j, k - 1) += vel * kernel;
+    // weight(i - 1, j, k - 1) += kernel;  
+
+    // // Bottom back left cell
+    // rx = x - ((i - 1) * theCellSize);
+    // ry = y - ((j - 1) * theCellSize);
+    // rz = z - ((k - 1) * theCellSize);
+    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    // velNeighbor(i - 1, j - 1, k - 1) += vel * kernel;
+    // weight(i - 1, j - 1, k - 1) += kernel;  
 }
 
 vec3 FluidSim::getParticleIndex(const vec3 &pos)
