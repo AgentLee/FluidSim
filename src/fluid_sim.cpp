@@ -18,6 +18,8 @@ void FluidSim::reset()
 {
 	mGrid.reset();
 	mGrid.particles.clear();
+	mGrid.particlesCopy.clear();
+	mGrid.particlesCopyPIC.clear();
     initParticles(mGrid);
 	mTotalFrameNum = 0;
 }
@@ -275,19 +277,19 @@ void FluidSim::particleToGrid(MACGrid &mGrid, double dt)
     FOR_EACH_FACE
     {
         if(mGrid.isValidFace(MACGrid::X, i, j, k)) {
-            if(uWeight(i, j, k) > 0) {
+            if(uWeight(i, j, k)) {
                 mGrid.mU(i, j, k) = uNeighbors(i, j, k) / uWeight(i, j, k);
             }
         }
 
         if(mGrid.isValidFace(MACGrid::Y, i, j, k)) {
-            if(vWeight(i, j, k) > 0) {
+            if(vWeight(i, j, k)) {
                 mGrid.mV(i, j, k) = vNeighbors(i, j, k) / vWeight(i, j, k);
             }
         }
         
         if(mGrid.isValidFace(MACGrid::Z, i, j, k)) {
-            if(wWeight(i, j, k) > 0) {
+            if(wWeight(i, j, k)) {
                 mGrid.mW(i, j, k) = wNeighbors(i, j, k) / wWeight(i, j, k);
             }
         }
@@ -578,7 +580,7 @@ void FluidSim::gridToParticle(MACGrid &mGrid)
 
 void FluidSim::advectParticle(MACGrid &mGrid, double dt)
 {
-    double flipPercentage = 0.95;
+    double flipPercentage = 1;
     for(int i = 0; i < mGrid.particles.size(); i++)
     {
         mGrid.particles.at(i).velocity = (1 - flipPercentage) * mGrid.particlesCopyPIC.at(i).velocity + (flipPercentage * mGrid.particlesCopy.at(i).velocity);
@@ -609,6 +611,9 @@ void FluidSim::resetGrid(MACGrid &mGrid)
 		mGrid.mP(i, j, k) = 0;
 		mGrid.markerGrid(i, j, k) = 0;
 	}
+
+	mGrid.particlesCopy.clear();
+	mGrid.particlesCopyPIC.clear();
 }
 
 void FluidSim::step()

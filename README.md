@@ -1,6 +1,6 @@
 # Fluid Simulator (Name TBD)
 
-![Rendered Fluid](images/fluid-rendered-2.gif)
+![Rendered Fluid](images/fluid-rendered-3.gif)
 ![Rendered Smoke](images/smoke-rendered-2.gif)
 
 ## How to Run

@@ -11,14 +11,14 @@
 #include <string.h>
 
 // 2D Simulation
-#define TWO_DIM     // COMMENT THIS OUT FOR 3D
+// #define TWO_DIM     // COMMENT THIS OUT FOR 3D
 #ifdef TWO_DIM
 const int theDim[3] = {32, 32, 1};
 const int theContainer[3] = {30, 30, 10};   // For fluid
 // 3D Simulation
 #else
 const int theDim[3] = {20, 12, 20};
-const int theContainer[3] = {10, 10, 10};   // For fluid
+const int theContainer[3] = {8, 8, 8};   // For fluid
 #endif
 
 enum SIMTYPE
