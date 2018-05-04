@@ -3,6 +3,12 @@
 ![Rendered Fluid](images/fluid-rendered-3.gif)
 ![Rendered Smoke](images/smoke-rendered-2.gif)
 
+## Overview
+Wave is a smoke and fluid simulator based on the algorithms presented by Robert Bridson in both his book and Siggraph course notes. 
+
+## Advection
+
+
 ## How to Run
 ```
 // Build program

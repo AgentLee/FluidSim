@@ -27,7 +27,7 @@ void FluidSim::reset()
 void FluidSim::initParticles(MACGrid &mGrid)
 {
     // Bridson recommends 8 particles per cell
-    int seed = 8;   
+    int seed = 10;   
     for(int k = 2; k < theContainer[2]; k++) {
         for(int j = theContainer[1] - 5; j < theContainer[1]; j++) {
             for(int i = 2; i < theContainer[0]; i++) {
@@ -73,10 +73,11 @@ void FluidSim::initMarkerGrid(MACGrid &mGrid)
 
 double FluidSim::kernelHelper(const double &r)
 {
-    if(abs(1 - r) <= 1) {
+    if(abs(r) <= 1) {
         return 1 - abs(r);
     }
     else {
+        std::cout << 0 << std::endl;
         return 0;
     }
 }
@@ -158,60 +159,60 @@ void FluidSim::averageVelocities(GridData &velNeighbor, GridData &weight, const 
     weight(i + 1, j + 1, k + 1) += kernel;  
 
 	// Left cell
-    // rx = x - ((i - 1) * theCellSize);
-    // ry = y - ((j) * theCellSize);
-    // rz = z - ((k) * theCellSize);
-    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
-    // velNeighbor(i - 1, j, k) += vel * kernel;
-    // weight(i + 1, j, k) += kernel;       
+    rx = x - ((i - 1) * theCellSize);
+    ry = y - ((j) * theCellSize);
+    rz = z - ((k) * theCellSize);
+    kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    velNeighbor(i - 1, j, k) += vel * kernel;
+    weight(i + 1, j, k) += kernel;       
 
-    // // Bottom left cell
-    // rx = x - ((i - 1) * theCellSize);
-    // ry = y - ((j - 1) * theCellSize);
-    // rz = z - ((k) * theCellSize);
-    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
-    // velNeighbor(i - 1, j - 1, k) += vel * kernel;
-    // weight(i + 1, j + 1, k) += kernel;    
+    // Bottom left cell
+    rx = x - ((i - 1) * theCellSize);
+    ry = y - ((j - 1) * theCellSize);
+    rz = z - ((k) * theCellSize);
+    kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    velNeighbor(i - 1, j - 1, k) += vel * kernel;
+    weight(i + 1, j + 1, k) += kernel;    
 
-    // // Bottom cell
-    // rx = x - ((i) * theCellSize);
-    // ry = y - ((j - 1) * theCellSize);
-    // rz = z - ((k) * theCellSize);
-    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
-    // velNeighbor(i, j - 1, k) += vel * kernel;
-    // weight(i, j - 1, k) += kernel;     
+    // Bottom cell
+    rx = x - ((i) * theCellSize);
+    ry = y - ((j - 1) * theCellSize);
+    rz = z - ((k) * theCellSize);
+    kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    velNeighbor(i, j - 1, k) += vel * kernel;
+    weight(i, j - 1, k) += kernel;     
 
-    // // Bottom back cell
-    // rx = x - ((i) * theCellSize);
-    // ry = y - ((j - 1) * theCellSize);
-    // rz = z - ((k - 1) * theCellSize);
-    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
-    // velNeighbor(i, j - 1, k - 1) += vel * kernel;
-    // weight(i, j - 1, k - 1) += kernel;     
+    // Bottom back cell
+    rx = x - ((i) * theCellSize);
+    ry = y - ((j - 1) * theCellSize);
+    rz = z - ((k - 1) * theCellSize);
+    kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    velNeighbor(i, j - 1, k - 1) += vel * kernel;
+    weight(i, j - 1, k - 1) += kernel;     
 
-    // // Back cell
-    // rx = x - ((i) * theCellSize);
-    // ry = y - ((j) * theCellSize);
-    // rz = z - ((k - 1) * theCellSize);
-    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
-    // velNeighbor(i, j, k - 1) += vel * kernel;
-    // weight(i, j, k - 1) += kernel;   
+    // Back cell
+    rx = x - ((i) * theCellSize);
+    ry = y - ((j) * theCellSize);
+    rz = z - ((k - 1) * theCellSize);
+    kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    velNeighbor(i, j, k - 1) += vel * kernel;
+    weight(i, j, k - 1) += kernel;   
 
-    // // Back left cell
-    // rx = x - ((i - 1) * theCellSize);
-    // ry = y - ((j) * theCellSize);
-    // rz = z - ((k - 1) * theCellSize);
-    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
-    // velNeighbor(i - 1, j, k - 1) += vel * kernel;
-    // weight(i - 1, j, k - 1) += kernel;  
+    // Back left cell
+    rx = x - ((i - 1) * theCellSize);
+    ry = y - ((j) * theCellSize);
+    rz = z - ((k - 1) * theCellSize);
+    kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    velNeighbor(i - 1, j, k - 1) += vel * kernel;
+    weight(i - 1, j, k - 1) += kernel;  
 
-    // // Bottom back left cell
-    // rx = x - ((i - 1) * theCellSize);
-    // ry = y - ((j - 1) * theCellSize);
-    // rz = z - ((k - 1) * theCellSize);
-    // kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
-    // velNeighbor(i - 1, j - 1, k - 1) += vel * kernel;
-    // weight(i - 1, j - 1, k - 1) += kernel;  
+    // Bottom back left cell
+    rx = x - ((i - 1) * theCellSize);
+    ry = y - ((j - 1) * theCellSize);
+    rz = z - ((k - 1) * theCellSize);
+    kernel = kernelHelper(rx) * kernelHelper(ry) * kernelHelper(rz);
+    velNeighbor(i - 1, j - 1, k - 1) += vel * kernel;
+    weight(i - 1, j - 1, k - 1) += kernel;  
 }
 
 vec3 FluidSim::getParticleIndex(const vec3 &pos)
@@ -268,6 +269,7 @@ void FluidSim::particleToGrid(MACGrid &mGrid, double dt)
         averageVelocities(vNeighbors, vWeight, pPosY, velY, pIdxY);
 
         // Average z components
+        // Get position and index with respect to the mW face
         vec3 pPosZ = mGrid.mW.worldToSelf(pPos);
         vec3 pIdxZ = getParticleIndex(pPosZ);
         double velZ = pVel[2];
@@ -572,15 +574,15 @@ void FluidSim::gridToParticle(MACGrid &mGrid)
 	mGrid.particlesCopyPIC = mGrid.particles;
     for(int i = 0; i < mGrid.particlesCopyPIC.size(); i++) {
         vec3 pos = mGrid.particlesCopyPIC.at(i).position;
-        mGrid.particlesCopyPIC.at(i).velocity[0] += mGrid.mUcopy.interpolate(pos);
-        mGrid.particlesCopyPIC.at(i).velocity[1] += mGrid.mVcopy.interpolate(pos);
-        mGrid.particlesCopyPIC.at(i).velocity[2] += mGrid.mWcopy.interpolate(pos);
+        mGrid.particlesCopyPIC.at(i).velocity[0] += mGrid.getVelocityX(pos);
+        mGrid.particlesCopyPIC.at(i).velocity[1] += mGrid.getVelocityY(pos);
+        mGrid.particlesCopyPIC.at(i).velocity[2] += mGrid.getVelocityZ(pos);
     }
 }
 
 void FluidSim::advectParticle(MACGrid &mGrid, double dt)
 {
-    double flipPercentage = 1;
+    double flipPercentage = .95;
     for(int i = 0; i < mGrid.particles.size(); i++)
     {
         mGrid.particles.at(i).velocity = (1 - flipPercentage) * mGrid.particlesCopyPIC.at(i).velocity + (flipPercentage * mGrid.particlesCopy.at(i).velocity);
