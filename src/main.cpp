@@ -11,7 +11,7 @@
 #include <string.h>
 
 // 2D Simulation
-// #define TWO_DIM     // COMMENT THIS OUT FOR 3D
+#define TWO_DIM     // COMMENT THIS OUT FOR 3D
 #ifdef TWO_DIM
 const int theDim[3] = {32, 32, 1};
 const int theContainer[3] = {30, 30, 10};   // For fluid
@@ -302,6 +302,9 @@ int main(int argc, char **argv)
     if(_simType == "smoke") {
         glutCreateWindow("Smoke Simulation");
         simType = SMOKE;
+
+        std::string _scene = argv[2];
+        theSmokeSim.scene = atoi(_scene.c_str());
     }
     else if(_simType == "fluid") {
         glutCreateWindow("Fluid Simulation");

@@ -21,37 +21,84 @@ void SmokeSim::reset()
 	mTotalFrameNum = 0;
 }
 
-void SmokeSim::updateSources(MACGrid &mGrid)
+void SmokeSim::updateSources(MACGrid &mGrid, int scene)
 {
 	// Set initial values for density, temperature, velocity
-    for(int i=6; i<12;i++){
-        for(int j=0; j<5; j++){
-            mGrid.mV(i,j+1,0) = 2.0;
-            mGrid.mD(i,j,0) = 1.0;
-            mGrid.mT(i,j,0) = 1.0;
 
-            mGrid.mV(i,j+2,0) = 2.0;
-            mGrid.mD(i,j,0) = 1.0;
-            mGrid.mT(i,j,0) = 1.0;
-        }
-    }
+    switch(scene)
+    {
+        case 0:
+            for(int i=6; i<12;i++){
+                for(int j=0; j<5; j++){
+                    mGrid.mV(i,j+1,0) = 2.0;
+                    mGrid.mD(i,j,0) = 1.0;
+                    mGrid.mT(i,j,0) = 1.0;
 
-	// Refresh particles in source.
-	for(int i=6; i<12; i++) {
-		for (int j = 0; j < 5; j++) {
-			for (int k = 0; k <= 0; k++) {
-				vec3 cell_center(theCellSize*(i+0.5), theCellSize*(j+0.5), theCellSize*(k+0.5));
-				for(int p=0; p<10; p++) {
-                    double a = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
-                    double b = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
-                    double c = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
-                    vec3 shift(a, b, c);
-                    vec3 xp = cell_center + shift;
-                    mGrid.rendering_particles.push_back(xp);
+                    mGrid.mV(i,j+2,0) = 2.0;
+                    mGrid.mD(i,j,0) = 1.0;
+                    mGrid.mT(i,j,0) = 1.0;
                 }
-			}
-		}
-	}
+            }
+
+            // Refresh particles in source.
+            for(int i=6; i<12; i++) {
+                for (int j = 0; j < 5; j++) {
+                    for (int k = 0; k <= 0; k++) {
+                        vec3 cell_center(theCellSize*(i+0.5), theCellSize*(j+0.5), theCellSize*(k+0.5));
+                        for(int p=0; p<10; p++) {
+                            double a = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
+                            double b = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
+                            double c = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
+                            vec3 shift(a, b, c);
+                            vec3 xp = cell_center + shift;
+                            mGrid.rendering_particles.push_back(xp);
+                        }
+                    }
+                }
+            }
+            break;
+        case 1:
+            mGrid.mU(1, 0, 0) = 10;
+            mGrid.mD(1,0,0) = 3.0;
+            mGrid.mT(1,0,0) = 2.0;
+            // Refresh particles in source.
+            // vec3 cell_center(theCellSize*(1+0.5), theCellSize*(0+0.5), theCellSize*(0+0.5));
+            // for(int p = 0; p < 10; p++) {
+            //     double a = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
+            //     double b = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
+            //     double c = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
+            //     vec3 shift(a, b, c);
+            //     vec3 xp = cell_center + shift;
+            //     mGrid.rendering_particles.push_back(xp);
+            // }
+
+            mGrid.mU(theDim[MACGrid::X] - 1,0, 0) = -5;
+            mGrid.mD(theDim[MACGrid::X] - 1,0,0) = 3.0;
+            mGrid.mT(theDim[MACGrid::X] - 1,0,0) = 2.0;
+            // cell_center = vec3(theCellSize*((theDim[MACGrid::X] - 1)+0.5), theCellSize*(0+0.5), theCellSize*(0+0.5));
+            // for(int p = 0; p < 10; p++) {
+            //     double a = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
+            //     double b = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
+            //     double c = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
+            //     vec3 shift(a, b, c);
+            //     vec3 xp = cell_center + shift;
+            //     mGrid.rendering_particles.push_back(xp);
+            // }
+
+            mGrid.mV(theDim[MACGrid::X] / 2,theDim[MACGrid::Y]-1, 0) = -15;
+            mGrid.mD(theDim[MACGrid::X] / 2,theDim[MACGrid::Y]-1,0) = 3.0;
+            mGrid.mT(theDim[MACGrid::X] / 2,theDim[MACGrid::Y]-1,0) = 15.0;
+            // cell_center = vec3(theCellSize*((theDim[MACGrid::X]/2+0.5)), theCellSize*((theDim[MACGrid::Y]-1)+0.5)), theCellSize*(0+0.5));
+            // for(int p = 0; p < 10; p++) {
+            //     double a = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
+            //     double b = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
+            //     double c = ((float) rand() / RAND_MAX - 0.5) * theCellSize;
+            //     vec3 shift(a, b, c);
+            //     vec3 xp = cell_center + shift;
+            //     mGrid.rendering_particles.push_back(xp);
+            // }
+            break;
+    }
 }
 
 /*
@@ -505,6 +552,10 @@ void SmokeSim::project(MACGrid &mGrid, double dt)
         // LHS is (dt / (density * cellsize * cellsize) * p
         // RHS is inv(A) * d
         // Need to divide by the constant value to truly solve for pressure
+
+        // ALSO pg31
+        // We divide by the pressure constant because to build the A matrix
+        // we want to get rid of this term by dividng by both sides.
         p(i, j, k) /= pressureConstant;
         target.mP(i, j, k) = p(i, j, k);
     }
@@ -514,7 +565,7 @@ void SmokeSim::project(MACGrid &mGrid, double dt)
     FOR_EACH_FACE
     {
         if(mGrid.isValidFace(MACGrid::X, i, j, k)) {
-            if(i - 1 < 0 || i >= theDim[MACGrid::X]) {
+            if(i - 1 <= 0 || i >= theDim[MACGrid::X]) {
                 target.mU(i, j, k) = 0;
             }
             else {
@@ -523,7 +574,7 @@ void SmokeSim::project(MACGrid &mGrid, double dt)
         }
 
         if(mGrid.isValidFace(MACGrid::Y, i, j, k)) {
-            if(j - 1 < 0 || j >= theDim[MACGrid::Y]) {
+            if(j - 1 <= 0 || j >= theDim[MACGrid::Y]) {
                 target.mV(i, j, k) = 0;
             }
             else {
@@ -532,7 +583,7 @@ void SmokeSim::project(MACGrid &mGrid, double dt)
         }
 
         if(mGrid.isValidFace(MACGrid::Z, i, j, k)) {
-            if(k - 1 < 0 || k >= theDim[MACGrid::Z]) {
+            if(k - 1 <= 0 || k >= theDim[MACGrid::Z]) {
                 target.mW(i, j, k) = 0;
             }
             else {
@@ -691,7 +742,7 @@ void SmokeSim::step()
 	double dt = 0.04;//0.1;
 
 	// Step0: Gather user forces
-	updateSources(mGrid);
+	updateSources(mGrid, scene);
 
 	// Step1: Calculate new velocities
 	advectVelocity(mGrid, dt);

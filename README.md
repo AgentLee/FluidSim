@@ -1,13 +1,17 @@
-# Fluid Simulator (Name TBD)
+# Wave: A PIC/FLIP Fluid Simulator
 
-![Rendered Fluid](images/fluid-rendered-3.gif)
-![Rendered Smoke](images/smoke-rendered-2.gif)
+![Banner](images/fluidbanner.png)
 
 ## Overview
-Wave is a smoke and fluid simulator based on the algorithms presented by Robert Bridson in both his book and Siggraph course notes. 
+Wave is a PIC/FLIP Fluid Simulator that can simulate both smoke and fluids. It is mainly based on the algorithms presented by Robert Bridson in both his book and his paper "Animating Sand as a Fluid".
 
-## Advection
+## Smoke
+![Rendered Smoke](images/triplethreat.gif)
+![Rendered Smoke](images/smokey.gif)
 
+## Fluid
+![Rendered Fluid](images/fluid-rendered-3.gif)
+![Rendered Fluid](images/fluid-rendered-4.gif)
 
 ## How to Run
 ```
@@ -20,7 +24,7 @@ make
 // Run program
 cd ..
 cd src
-./SIM <fluid or smoke>
+.SIM fluid or ./SIM smoke <scene 0 or 1>
 ```
 
 **To change to 3D Fluid**
